@@ -1,0 +1,10 @@
+{
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\river\\Documents\\Jars\\java-cup-11b.jar",
+        "c:\\Users\\river\\Documents\\Jars\\java-cup-11b-runtime.jar",
+        "c:\\Users\\river\\Documents\\Jars\\jflex-1.9.1.jar"
+    ]
+}
