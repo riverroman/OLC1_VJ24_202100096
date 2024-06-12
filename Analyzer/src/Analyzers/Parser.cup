@@ -1,16 +1,33 @@
 package Analyzers;
 
 import java_cup.runtime.*;
+import java.util.LinkedList;
+import Abstracto.Instruccion;
+import Simbolo.Tipo;
+import Simbolo.tipoDato;
+import Expresiones.Aritmeticas;
+import Expresiones.Relacionales;
+import Expresiones.Operadores;
+import Expresiones.OperadoresRelacionales;
+
+//Instrucciones
+import Instrucciones.Print;
+
+//Expresiones
+import Expresiones.Nativo;
 
 parser code 
 {:
 
+    Lexer l;
+    Parser(Lexer l){this.l = l;}
+
     public void syntax_error(Symbol s){ 
-        System.out.println("Error Sintáctico en la Línea | " + (s.left) + " Columna | " + s.right+ " No se esperaba este componente | " + s.value); 
+        System.out.println("Error Sintactico en la Linea | " + (s.left) + " Columna | " + s.right+ " No se esperaba este componente | " + s.value); 
     } 
 
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
-        System.out.println("Error síntactico irrecuperable en la Línea | " + (s.left)+ " Columna | "+ s.right+" Componente | " + s.value + " | No reconocido"); 
+        System.out.println("Error sintactico irrecuperable en la Linea | " + (s.left)+ " Columna | "+ s.right+" Componente | " + s.value + " | No reconocido"); 
     }  
 :}
 
@@ -19,48 +36,72 @@ action code
 
 /*      Terminales      */
 
-terminal String T_ENTERO,T_CADENA,T_DECIMAL,T_CARACTER;
 terminal String T_PRINTLN;
+terminal String T_ENTERO,T_CADENA,T_DECIMAL,T_CARACTER;
 terminal String P_LEFT, P_RIGHT, T_SEMICOLON, T_BOLEANO;
 terminal String T_PLUS, T_MINUS, T_TIMES, T_DIVIDE, T_POW, T_MOD;
+terminal String T_TWOEQUAL, T_NOTEQUAL, T_LESSTHAN, T_LESSTHANEQUAL, T_GREATERTHAN, T_GREATERTHANEQUAL;
+terminal String UMENOS;
 
 /*      No Terminales       */
 
-non terminal INICIO;
-non terminal LISTAINSTRUCCIONES, INSTRUCCION;
-non terminal IMPRIMIR, EXPRESION, TIPOS, ARITMETICAS;
+non terminal LinkedList<Instruccion> INICIO, LISTAINSTRUCCIONES;
+non terminal Instruccion INSTRUCCION;
+non terminal Instruccion EXPRESION;
+non terminal Instruccion IMPRIMIR, TIPOS, ARITMETICAS, RELACIONALES;
 
 /*      Manejo de Precedencia   */
 
+precedence left T_TWOEQUAL, T_NOTEQUAL;
+precedence left T_LESSTHAN, T_LESSTHANEQUAL, T_GREATERTHAN, T_GREATERTHANEQUAL;
 precedence left T_PLUS, T_MINUS;
+precedence left T_TIMES, T_DIVIDE, T_MOD;
+precedence left T_POW;
+precedence left UMENOS;
 
 start with INICIO; 
 
-INICIO ::= LISTAINSTRUCCIONES 
+INICIO ::= LISTAINSTRUCCIONES:a         {: RESULT= a; :} 
     |       
 ;
 
-LISTAINSTRUCCIONES ::= LISTAINSTRUCCIONES INSTRUCCION
-    |                  INSTRUCCION
+LISTAINSTRUCCIONES ::= LISTAINSTRUCCIONES:a INSTRUCCION:b       {: RESULT = a;  RESULT.add(b); :}
+    |                  INSTRUCCION:a                            {: RESULT = new LinkedList<>(); RESULT.add(a); :}
 ;
 
-INSTRUCCION ::= IMPRIMIR
+INSTRUCCION ::= IMPRIMIR:a                                            {: RESULT = a; :}
 ;
 
-IMPRIMIR ::= T_PRINTLN P_LEFT EXPRESION:exp P_RIGHT T_SEMICOLON       {:  Util.Imprimir.Print(exp.toString()); :}
+IMPRIMIR ::= T_PRINTLN P_LEFT EXPRESION:a P_RIGHT T_SEMICOLON       {: RESULT = new Print(a,aleft,aright); :}
 ;
 
-EXPRESION ::= TIPOS:val         {: RESULT = val.toString(); :}
-    |         ARITMETICAS:val   {: RESULT = val.toString(); :}
+EXPRESION ::= T_MINUS EXPRESION:a                   {: RESULT = new Aritmeticas(a, Operadores.NEGACION, aleft, aright); :} %prec UMENOS
+       |      P_LEFT EXPRESION:a P_RIGHT            {: RESULT = a; :}
+       |      TIPOS:a                               {: RESULT = a; :}
+       |      ARITMETICAS:a                         {: RESULT = a; :}
+       |      RELACIONALES:a                        {: RESULT = a; :}
 ;
 
-ARITMETICAS ::=  EXPRESION:a T_PLUS EXPRESION:b      {: RESULT = Instrucciones.Aritmeticas.Suma(a.toString(), b.toString()); :}
-        |        EXPRESION:a T_MINUS EXPRESION:b     {: RESULT = Instrucciones.Aritmeticas.Resta(a.toString(), b.toString()); :}
+ARITMETICAS ::=  EXPRESION:a T_PLUS EXPRESION:b      {: RESULT = new Aritmeticas(a,b, Operadores.SUMA, aleft, aright); :}    
+       |         EXPRESION:a T_MINUS EXPRESION:b     {: RESULT = new Aritmeticas(a,b, Operadores.RESTA, aleft, aright); :}
+       |         EXPRESION:a T_TIMES EXPRESION:b     {: RESULT = new Aritmeticas(a,b, Operadores.MULTIPLICACION, aleft, aright); :}
+       |         EXPRESION:a T_DIVIDE EXPRESION:b    {: RESULT = new Aritmeticas(a,b, Operadores.DIVISION, aleft, aright); :}
+       |         EXPRESION:a T_POW EXPRESION:b       {: RESULT = new Aritmeticas(a,b, Operadores.POTENCIA, aleft, aright); :}
+       |         EXPRESION:a T_MOD EXPRESION:b       {: RESULT = new Aritmeticas(a,b, Operadores.MODULO, aleft, aright); :}
 ;
 
-TIPOS ::=  T_ENTERO:val     {: RESULT = val.toString(); :} 
-    |      T_CADENA:val     {: RESULT = val.toString(); :}
-    |      T_DECIMAL:val    {: RESULT = val.toString(); :}
-    |      T_BOLEANO:val    {: RESULT = val.toString(); :}
-    |      T_CARACTER:val   {: RESULT = val.toString(); :}    
+RELACIONALES ::= EXPRESION:a T_TWOEQUAL EXPRESION:b            {: RESULT = new Relacionales(a,b, OperadoresRelacionales.IGUALIGUAL, aleft, aright); :} %prec T_TWOEQUAL
+       |         EXPRESION:a T_NOTEQUAL EXPRESION:b            {: RESULT = new Relacionales(a,b, OperadoresRelacionales.DIFERENTEIGUAL, aleft, aright); :} 
+       |         EXPRESION:a T_LESSTHAN EXPRESION:b            {: RESULT = new Relacionales(a,b, OperadoresRelacionales.MENOR, aleft, aright); :} 
+       |         EXPRESION:a T_LESSTHANEQUAL EXPRESION:b       {: RESULT = new Relacionales(a,b, OperadoresRelacionales.MENORQUE, aleft, aright); :} 
+       |         EXPRESION:a T_GREATERTHAN EXPRESION:b         {: RESULT = new Relacionales(a,b, OperadoresRelacionales.MAYOR, aleft, aright); :}       
+       |         EXPRESION:a T_GREATERTHANEQUAL EXPRESION:b    {: RESULT = new Relacionales(a,b, OperadoresRelacionales.MAYORQUE, aleft, aright); :}       
+;
+
+TIPOS ::=
+    |  T_ENTERO:a     {: RESULT = new Nativo(Integer.parseInt(a), new Tipo(tipoDato.ENTERO), aleft, aright); :}
+    |  T_CADENA:a     {: RESULT = new Nativo(a, new Tipo(tipoDato.CADENA), aleft, aright); :}
+    |  T_DECIMAL:a    {: RESULT = new Nativo(new Double(a), new Tipo(tipoDato.DECIMAL), aleft, aright); :}
+    |  T_CARACTER:a   {: RESULT = new Nativo(a, new Tipo(tipoDato.CARACTER), aleft, aright); :}
+    |  T_BOLEANO:a    {: RESULT = new Nativo(Boolean.parseBoolean(a), new Tipo(tipoDato.BOOLEANO), aleft, aright); :}
 ;
