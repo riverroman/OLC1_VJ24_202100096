@@ -195,6 +195,13 @@ public class Relacionales extends Instruccion {
                     default -> 
                         new Errores("SEMANTICO", "Relacional Invalido entre: " + comparando1 + " y " + comparando2, this.linea, this.columna);
                 };
+            case tipoDato.BOOLEANO ->
+                 switch (comparando2){
+                     case tipoDato.BOOLEANO -> 
+                        ((boolean) compador1 ? 1 : 0) < ((boolean) comparador2 ? 1 : 0);
+                     default ->
+                     new Errores("SEMANTICO", "Relacional Invalido entre: " + comparando1 + " y " + comparando2, this.linea, this.columna);
+            };
             case tipoDato.CARACTER -> 
                 switch (comparando2) {
                     case tipoDato.ENTERO -> 
@@ -240,6 +247,13 @@ public class Relacionales extends Instruccion {
                     default -> 
                         new Errores("SEMANTICO", "Relacional Invalido entre: " + comparando1 + " y " + comparando2, this.linea, this.columna);
                 };
+            case tipoDato.BOOLEANO ->
+                 switch (comparando2){
+                     case tipoDato.BOOLEANO -> 
+                        ((boolean) compador1 ? 1 : 0) <= ((boolean) comparador2 ? 1 : 0);
+                     default ->
+                     new Errores("SEMANTICO", "Relacional Invalido entre: " + comparando1 + " y " + comparando2, this.linea, this.columna);
+            };
             case tipoDato.CARACTER -> 
                 switch (comparando2) {
                     case tipoDato.ENTERO -> 
@@ -285,6 +299,13 @@ public class Relacionales extends Instruccion {
                     default -> 
                         new Errores("SEMANTICO", "Relacional Invalido entre: " + comparando1 + " y " + comparando2, this.linea, this.columna);
                 };
+            case tipoDato.BOOLEANO ->
+                 switch (comparando2){
+                     case tipoDato.BOOLEANO -> 
+                        ((boolean) compador1 ? 1 : 0) > ((boolean) comparador2 ? 1 : 0);
+                     default ->
+                     new Errores("SEMANTICO", "Relacional Invalido entre: " + comparando1 + " y " + comparando2, this.linea, this.columna);
+            };
             case tipoDato.CARACTER -> 
                 switch (comparando2) {
                     case tipoDato.ENTERO -> 
@@ -330,6 +351,13 @@ public class Relacionales extends Instruccion {
                     default -> 
                         new Errores("SEMANTICO", "Relacional Invalido entre: " + comparando1 + " y " + comparando2, this.linea, this.columna);
                 };
+            case tipoDato.BOOLEANO ->
+                 switch (comparando2){
+                     case tipoDato.BOOLEANO -> 
+                        ((boolean) compador1 ? 1 : 0) >= ((boolean) comparador2 ? 1 : 0);
+                     default ->
+                     new Errores("SEMANTICO", "Relacional Invalido entre: " + comparando1 + " y " + comparando2, this.linea, this.columna);
+            };
             case tipoDato.CARACTER -> 
                 switch (comparando2) {
                     case tipoDato.ENTERO -> 

@@ -7,8 +7,10 @@ import Simbolo.Tipo;
 import Simbolo.tipoDato;
 import Expresiones.Aritmeticas;
 import Expresiones.Relacionales;
+import Expresiones.Logicos;
 import Expresiones.Operadores;
 import Expresiones.OperadoresRelacionales;
+import Expresiones.OperadoresLogicos;
 
 //Instrucciones
 import Instrucciones.Print;
@@ -41,6 +43,7 @@ terminal String T_ENTERO,T_CADENA,T_DECIMAL,T_CARACTER;
 terminal String P_LEFT, P_RIGHT, T_SEMICOLON, T_BOLEANO;
 terminal String T_PLUS, T_MINUS, T_TIMES, T_DIVIDE, T_POW, T_MOD;
 terminal String T_TWOEQUAL, T_NOTEQUAL, T_LESSTHAN, T_LESSTHANEQUAL, T_GREATERTHAN, T_GREATERTHANEQUAL;
+terminal String T_OR, T_AND, T_XOR, T_NOT;
 terminal String UMENOS;
 
 /*      No Terminales       */
@@ -48,16 +51,27 @@ terminal String UMENOS;
 non terminal LinkedList<Instruccion> INICIO, LISTAINSTRUCCIONES;
 non terminal Instruccion INSTRUCCION;
 non terminal Instruccion EXPRESION;
-non terminal Instruccion IMPRIMIR, TIPOS, ARITMETICAS, RELACIONALES;
+non terminal Instruccion IMPRIMIR, TIPOS, ARITMETICAS, RELACIONALES, LOGICOS;
 
 /*      Manejo de Precedencia   */
 
-precedence left T_TWOEQUAL, T_NOTEQUAL;
-precedence left T_LESSTHAN, T_LESSTHANEQUAL, T_GREATERTHAN, T_GREATERTHANEQUAL;
-precedence left T_PLUS, T_MINUS;
-precedence left T_TIMES, T_DIVIDE, T_MOD;
-precedence left T_POW;
-precedence left UMENOS;
+precedence left T_OR;                
+precedence left T_AND;               
+precedence left T_XOR;               
+precedence right T_NOT;              
+precedence left T_TWOEQUAL;          
+precedence left T_NOTEQUAL;          
+precedence left T_LESSTHAN;          
+precedence left T_LESSTHANEQUAL;     
+precedence left T_GREATERTHAN;       
+precedence left T_GREATERTHANEQUAL;  
+precedence left T_PLUS;              
+precedence left T_MINUS;             
+precedence left T_TIMES;            
+precedence left T_DIVIDE;           
+precedence left T_MOD;              
+precedence nonassoc T_POW;          
+precedence right UMENOS;            
 
 start with INICIO; 
 
@@ -80,6 +94,7 @@ EXPRESION ::= T_MINUS EXPRESION:a                   {: RESULT = new Aritmeticas(
        |      TIPOS:a                               {: RESULT = a; :}
        |      ARITMETICAS:a                         {: RESULT = a; :}
        |      RELACIONALES:a                        {: RESULT = a; :}
+       |      LOGICOS:a                             {: RESULT = a; :}
 ;
 
 ARITMETICAS ::=  EXPRESION:a T_PLUS EXPRESION:b      {: RESULT = new Aritmeticas(a,b, Operadores.SUMA, aleft, aright); :}    
@@ -96,6 +111,12 @@ RELACIONALES ::= EXPRESION:a T_TWOEQUAL EXPRESION:b            {: RESULT = new R
        |         EXPRESION:a T_LESSTHANEQUAL EXPRESION:b       {: RESULT = new Relacionales(a,b, OperadoresRelacionales.MENORQUE, aleft, aright); :} 
        |         EXPRESION:a T_GREATERTHAN EXPRESION:b         {: RESULT = new Relacionales(a,b, OperadoresRelacionales.MAYOR, aleft, aright); :}       
        |         EXPRESION:a T_GREATERTHANEQUAL EXPRESION:b    {: RESULT = new Relacionales(a,b, OperadoresRelacionales.MAYORQUE, aleft, aright); :}       
+;
+
+LOGICOS ::=      EXPRESION:a T_OR EXPRESION:b    {: RESULT = new Logicos(a,b, OperadoresLogicos.OR, aleft, aright); :}
+       |         EXPRESION:a T_AND EXPRESION:b   {: RESULT = new Logicos(a,b, OperadoresLogicos.AND, aleft, aright); :}
+       |         EXPRESION:a T_XOR EXPRESION:b   {: RESULT = new Logicos(a,b, OperadoresLogicos.XOR, aleft, aright); :}
+       |         T_NOT EXPRESION:a               {: RESULT = new Logicos(a,   OperadoresLogicos.NOT, aleft, aright); :}
 ;
 
 TIPOS ::=

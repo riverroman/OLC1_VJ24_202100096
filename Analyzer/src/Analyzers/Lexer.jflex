@@ -62,6 +62,13 @@ boleano = true|false
 ">="    { return new Symbol(sym.T_GREATERTHANEQUAL, yycolumn, yyline, yytext()); }
 ">"     { return new Symbol(sym.T_GREATERTHAN, yycolumn, yyline, yytext()); }
 
+/*      Logicos         */
+
+"||"    { return new Symbol(sym.T_OR,  yycolumn, yyline, yytext());  }
+"&&"    { return new Symbol(sym.T_AND, yycolumn, yyline, yytext());  }
+"^"     { return new Symbol(sym.T_XOR, yycolumn, yyline, yytext());  }  
+"!"     { return new Symbol(sym.T_NOT, yycolumn, yyline, yytext());  } 
+
 /*      Encapsulamiento     */
 
 {entero}     { return new Symbol(sym.T_ENTERO, yycolumn, yyline, yytext()); }

@@ -15,11 +15,11 @@ public class Main {
     public static void main(String[] args) throws Exception {
         
         String entrada = """
-                         
-                        println('a' >= 97);
-                        println('a' >= 97.01);
-                        println(50 >= 'F');
                         
+                         println(!(true && false) || !(false && true));
+                         println(!(true || false) && !(false || true)); 
+                         println(!(true ^ false) || !(false ^ true));
+                         
                         """;
         
         analizar(entrada);

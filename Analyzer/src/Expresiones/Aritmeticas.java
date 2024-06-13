@@ -134,10 +134,10 @@ public class Aritmeticas extends Instruccion {
                 }
             }
             case tipoDato.BOOLEANO -> {
-                switch (tipo2) {
+            switch (tipo2) {
                     case tipoDato.CADENA -> {
                         this.tipo.setTipo(tipoDato.CADENA);
-                        return op1.toString() + op2.toString();
+                        return Boolean.toString((boolean) op1) + op2.toString();
                     }
                     default -> {
                         return new Errores("SEMANTICO", "Intento de Suma " + tipo1 + " y " + tipo2, this.linea, this.columna);
