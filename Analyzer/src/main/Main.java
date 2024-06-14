@@ -15,10 +15,10 @@ public class Main {
     public static void main(String[] args) throws Exception {
         
         String entrada = """
-                        
-                         println(!(true && false) || !(false && true));
-                         println(!(true || false) && !(false || true)); 
-                         println(!(true ^ false) || !(false ^ true));
+                         
+                         var intToDouble : int = 10;
+                         var castIntToDouble : double = (double) intToDouble;
+                         println(castIntToDouble + 12 / 10);
                          
                         """;
         

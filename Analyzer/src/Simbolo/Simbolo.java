@@ -1,4 +1,3 @@
-
 package Simbolo;
 
 public class Simbolo {
@@ -6,17 +5,21 @@ public class Simbolo {
     private Tipo tipo;
     private String id;
     private Object valor;
-    
-    
-    public Simbolo(Tipo tipo, String id){
+    private boolean mutabilidad; // var true, const false
+
+    // Constructor para cuando no hay valor inicial
+    public Simbolo(Tipo tipo, String id, boolean mutabilidad) {
         this.tipo = tipo;
         this.id = id;
+        this.mutabilidad = mutabilidad;
     }
     
-    public Simbolo(Tipo tipo, String id, Object valor){
+    // Constructor completo
+    public Simbolo(Tipo tipo, String id, Object valor, boolean mutabilidad) {
         this.tipo = tipo;
         this.id = id;
         this.valor = valor;
+        this.mutabilidad = mutabilidad;
     }
 
     public Tipo getTipo() {
@@ -31,6 +34,10 @@ public class Simbolo {
         return valor;
     }
 
+    public boolean isMutable() {
+        return mutabilidad;
+    }
+
     public void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
@@ -42,7 +49,8 @@ public class Simbolo {
     public void setValor(Object valor) {
         this.valor = valor;
     }
-    
-    
-    
+
+    public void setMutability(boolean mutabilidad) {
+        this.mutabilidad = mutabilidad;
+    }
 }

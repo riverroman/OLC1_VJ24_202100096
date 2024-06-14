@@ -8,7 +8,7 @@ public class Tipo {
     public Tipo(tipoDato tipo){
         this.tipo = tipo;
     }
-
+    
     public tipoDato getTipo() {
         return tipo;
     }

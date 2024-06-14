@@ -30,19 +30,29 @@ entero = [0-9]+
 decimal = [0-9]+\.[0-9]+
 caracter = '[^']'
 cadena = \"[^\"\n]*\"
+id = [a-zA-z][a-zA-Z0-9_]*
 boleano = true|false
 
 %%
 
 /*      Palabras Reservadas         */
 
-"println"   { return new Symbol(sym.T_PRINTLN, yycolumn, yyline, yytext()); }
+"println"   { return new Symbol(sym.T_PRINTLN, yycolumn, yyline, yytext());  }
+"var"       { return new Symbol(sym.T_VAR, yycolumn, yyline, yytext());      }
+"const"     { return new Symbol(sym.T_CONST, yycolumn, yyline, yytext());    }
+"int"       { return new Symbol(sym.T_INT, yycolumn, yyline, yytext());      }
+"double"    { return new Symbol(sym.T_DOUBLE, yycolumn, yyline, yytext());   }
+"string"    { return new Symbol(sym.T_STRING, yycolumn, yyline, yytext());   }
+"bool"      { return new Symbol(sym.T_BOOL, yycolumn, yyline, yytext());     }
+"char"      { return new Symbol(sym.T_CHARACTER, yycolumn, yyline, yytext());}
 
+ 
 /*      Signos      */
 
 "("     { return new Symbol(sym.P_LEFT, yycolumn, yyline, yytext()); }
 ")"     { return new Symbol(sym.P_RIGHT, yycolumn, yyline, yytext()); }
 ";"     { return new Symbol(sym.T_SEMICOLON, yycolumn, yyline, yytext()); }
+":"     { return new Symbol(sym.T_COLON, yycolumn, yyline, yytext()); }
 
 /*      Simbolos        */
 
@@ -55,6 +65,7 @@ boleano = true|false
 
 /*      Relacionales       */
 
+"="     { return new Symbol(sym.T_EQUAL, yycolumn, yyline, yytext());}
 "=="    { return new Symbol(sym.T_TWOEQUAL, yycolumn, yyline, yytext()); }
 "!="    { return new Symbol(sym.T_NOTEQUAL, yycolumn, yyline, yytext()); }
 "<="    { return new Symbol(sym.T_LESSTHANEQUAL, yycolumn, yyline, yytext()); }
@@ -76,6 +87,7 @@ boleano = true|false
 {decimal}    { return new Symbol(sym.T_DECIMAL, yycolumn, yyline, yytext()); }
 {cadena}     { String contenido = yytext().substring(1, yytext().length() - 1); return new Symbol(sym.T_CADENA, yycolumn, yyline, contenido);}
 {boleano}    { return new Symbol(sym.T_BOLEANO, yycolumn, yyline, yytext()); }
+{id}         { return new Symbol(sym.T_ID, yycolumn, yyline, yytext()); }
 
 /*      Comentarios         */
 

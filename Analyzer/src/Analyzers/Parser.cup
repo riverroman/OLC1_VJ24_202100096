@@ -14,9 +14,13 @@ import Expresiones.OperadoresLogicos;
 
 //Instrucciones
 import Instrucciones.Print;
+import Instrucciones.Declaracion;
+import Instrucciones.AsignacionVar;
 
 //Expresiones
 import Expresiones.Nativo;
+import Expresiones.AccesoVar;
+import Expresiones.Casteo;
 
 parser code 
 {:
@@ -40,10 +44,11 @@ action code
 
 terminal String T_PRINTLN;
 terminal String T_ENTERO,T_CADENA,T_DECIMAL,T_CARACTER;
-terminal String P_LEFT, P_RIGHT, T_SEMICOLON, T_BOLEANO;
+terminal String P_LEFT, P_RIGHT, T_SEMICOLON, T_BOLEANO, T_COLON;
 terminal String T_PLUS, T_MINUS, T_TIMES, T_DIVIDE, T_POW, T_MOD;
-terminal String T_TWOEQUAL, T_NOTEQUAL, T_LESSTHAN, T_LESSTHANEQUAL, T_GREATERTHAN, T_GREATERTHANEQUAL;
+terminal String T_TWOEQUAL, T_NOTEQUAL, T_LESSTHAN, T_LESSTHANEQUAL, T_GREATERTHAN, T_GREATERTHANEQUAL, T_EQUAL;
 terminal String T_OR, T_AND, T_XOR, T_NOT;
+terminal String T_INT, T_DOUBLE, T_STRING, T_BOOL, T_ID, T_VAR, T_CONST, T_CHARACTER;
 terminal String UMENOS;
 
 /*      No Terminales       */
@@ -52,26 +57,22 @@ non terminal LinkedList<Instruccion> INICIO, LISTAINSTRUCCIONES;
 non terminal Instruccion INSTRUCCION;
 non terminal Instruccion EXPRESION;
 non terminal Instruccion IMPRIMIR, TIPOS, ARITMETICAS, RELACIONALES, LOGICOS;
+non terminal Instruccion DECLARACION, ASIGNACION, CASTEO;
+non terminal Tipo TIPOSDECLARACION;
+non terminal MUTABILIDAD;
 
 /*      Manejo de Precedencia   */
 
-precedence left T_OR;                
-precedence left T_AND;               
-precedence left T_XOR;               
-precedence right T_NOT;              
-precedence left T_TWOEQUAL;          
-precedence left T_NOTEQUAL;          
-precedence left T_LESSTHAN;          
-precedence left T_LESSTHANEQUAL;     
-precedence left T_GREATERTHAN;       
-precedence left T_GREATERTHANEQUAL;  
-precedence left T_PLUS;              
-precedence left T_MINUS;             
-precedence left T_TIMES;            
-precedence left T_DIVIDE;           
-precedence left T_MOD;              
-precedence nonassoc T_POW;          
-precedence right UMENOS;            
+precedence left T_OR;
+precedence left T_AND;
+precedence left T_XOR;
+precedence right T_NOT;
+precedence left T_TWOEQUAL, T_NOTEQUAL;
+precedence left T_LESSTHAN, T_LESSTHANEQUAL, T_GREATERTHAN, T_GREATERTHANEQUAL;
+precedence left T_PLUS, T_MINUS;
+precedence left T_TIMES, T_DIVIDE, T_MOD;
+precedence right T_POW;
+precedence right UMENOS;
 
 start with INICIO; 
 
@@ -84,9 +85,29 @@ LISTAINSTRUCCIONES ::= LISTAINSTRUCCIONES:a INSTRUCCION:b       {: RESULT = a;  
 ;
 
 INSTRUCCION ::= IMPRIMIR:a                                            {: RESULT = a; :}
+    |           DECLARACION:a                                         {: RESULT = a; :}
+    |           ASIGNACION:a                                          {: RESULT = a; :}
 ;
 
 IMPRIMIR ::= T_PRINTLN P_LEFT EXPRESION:a P_RIGHT T_SEMICOLON       {: RESULT = new Print(a,aleft,aright); :}
+;
+
+DECLARACION ::= MUTABILIDAD:m T_ID:b T_COLON TIPOSDECLARACION:a T_EQUAL EXPRESION:c T_SEMICOLON     {: Boolean mut = (Boolean) m; RESULT = new Declaracion(b, c, a, mut.booleanValue(), aleft, aright);    :}
+        |       MUTABILIDAD:m T_ID:b T_COLON TIPOSDECLARACION:a T_SEMICOLON                         {: Boolean mut = (Boolean) m; RESULT = new Declaracion(b, null, a, mut.booleanValue(), aleft, aright); :}
+;
+
+ASIGNACION ::= T_ID:a T_EQUAL EXPRESION:b T_SEMICOLON {: RESULT = new AsignacionVar(a,b, aleft, aright); :}
+;
+
+MUTABILIDAD ::= T_VAR   {: RESULT = new Boolean(true); :}
+              | T_CONST {: RESULT = new Boolean(false); :}
+;
+
+TIPOSDECLARACION::= T_INT           {: RESULT = new Tipo(tipoDato.ENTERO);   :}
+            |       T_DOUBLE        {: RESULT = new Tipo(tipoDato.DECIMAL);  :}
+            |       T_STRING        {: RESULT = new Tipo(tipoDato.CADENA);   :}
+            |       T_BOOL          {: RESULT = new Tipo(tipoDato.BOOLEANO); :}
+            |       T_CHARACTER     {: RESULT = new Tipo(tipoDato.CARACTER); :}
 ;
 
 EXPRESION ::= T_MINUS EXPRESION:a                   {: RESULT = new Aritmeticas(a, Operadores.NEGACION, aleft, aright); :} %prec UMENOS
@@ -95,6 +116,8 @@ EXPRESION ::= T_MINUS EXPRESION:a                   {: RESULT = new Aritmeticas(
        |      ARITMETICAS:a                         {: RESULT = a; :}
        |      RELACIONALES:a                        {: RESULT = a; :}
        |      LOGICOS:a                             {: RESULT = a; :}
+       |      T_ID:a                                {: RESULT = new AccesoVar(a, aleft, aright); :}
+       |      CASTEO:a                              {: RESULT = a; :}
 ;
 
 ARITMETICAS ::=  EXPRESION:a T_PLUS EXPRESION:b      {: RESULT = new Aritmeticas(a,b, Operadores.SUMA, aleft, aright); :}    
@@ -126,3 +149,7 @@ TIPOS ::=
     |  T_CARACTER:a   {: RESULT = new Nativo(a, new Tipo(tipoDato.CARACTER), aleft, aright); :}
     |  T_BOLEANO:a    {: RESULT = new Nativo(Boolean.parseBoolean(a), new Tipo(tipoDato.BOOLEANO), aleft, aright); :}
 ;
+
+CASTEO ::= P_LEFT TIPOSDECLARACION:a P_RIGHT EXPRESION:b  {: RESULT = new Casteo(b, a, aleft, aright); :}
+;
+
