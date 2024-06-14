@@ -63,6 +63,11 @@ boleano = true|false
 "**"    { return new Symbol(sym.T_POW, yycolumn, yyline, yytext()); }
 "%"     { return new Symbol(sym.T_MOD, yycolumn, yyline, yytext()); }
 
+/*      Incremento y Decremento     */
+
+"++"    { return new Symbol(sym.T_INCREMENT, yycolumn, yyline, yytext()); }
+"--"    { return new Symbol(sym.T_DECREMENT, yycolumn, yyline, yytext()); }
+
 /*      Relacionales       */
 
 "="     { return new Symbol(sym.T_EQUAL, yycolumn, yyline, yytext());}

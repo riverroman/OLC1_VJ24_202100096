@@ -22,11 +22,13 @@ public class sym {
   public static final int T_CONST = 35;
   public static final int T_CADENA = 4;
   public static final int T_PRINTLN = 2;
-  public static final int UMENOS = 37;
+  public static final int UMENOS = 39;
+  public static final int T_INCREMENT = 37;
   public static final int EOF = 0;
   public static final int T_MINUS = 13;
   public static final int error = 1;
   public static final int T_MOD = 17;
+  public static final int T_DECREMENT = 38;
   public static final int T_STRING = 31;
   public static final int T_CHARACTER = 36;
   public static final int T_DECIMAL = 5;
@@ -84,6 +86,8 @@ public class sym {
   "T_VAR",
   "T_CONST",
   "T_CHARACTER",
+  "T_INCREMENT",
+  "T_DECREMENT",
   "UMENOS"
   };
 }

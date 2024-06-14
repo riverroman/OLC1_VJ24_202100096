@@ -16,9 +16,13 @@ public class Main {
         
         String entrada = """
                          
-                         var intToDouble : int = 10;
-                         var castIntToDouble : double = (double) intToDouble;
-                         println(castIntToDouble + 12 / 10);
+                         var edad : double = 19.20;
+                         println(edad);
+                         edad++;
+                         edad++;
+                         edad++;
+                         edad--;
+                         println(edad + 10 / 2);
                          
                         """;
         
