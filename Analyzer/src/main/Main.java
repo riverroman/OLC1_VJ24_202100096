@@ -15,16 +15,10 @@ public class Main {
     public static void main(String[] args) throws Exception {
         
         String entrada = """
-                         
-                         var edad : double = 19.20;
-                         println(edad);
-                         edad++;
-                         edad++;
-                         edad++;
-                         edad--;
-                         println(edad + 10 / 2);
-                         
-                        """;
+             
+               println("COMPILADORES 1 - VACAS JUNIO 2024");
+                
+        """;
         
         analizar(entrada);
         

@@ -46,21 +46,39 @@ boleano = true|false
 "bool"      { return new Symbol(sym.T_BOOL, yycolumn, yyline, yytext());     }
 "char"      { return new Symbol(sym.T_CHARACTER, yycolumn, yyline, yytext());}
 
- 
+
+/*  Palabras Reservadas Sentencias de Control   */
+
+"if"        { return new Symbol(sym.T_IF, yycolumn, yyline, yytext());}
+"else"      { return new Symbol(sym.T_ELSE, yycolumn, yyline, yytext());}
+
+/*  Palabras Reservadas Sentencias Ciclicas     */
+
+"for"        { return new Symbol(sym.T_FOR, yycolumn, yyline, yytext());}
+
+/*  Palabras Reservadas Sentencias De Transferencia   */
+
+"break"     { return new Symbol(sym.T_BREAK, yycolumn, yyline, yytext());    }
+"continue"  { return new Symbol(sym.T_CONTINUE, yycolumn, yyline, yytext()); }
+"while"     { return new Symbol(sym.T_WHILE, yycolumn, yyline, yytext());    }
+"do"        { return new Symbol(sym.T_DO, yycolumn, yyline, yytext());       }
+
 /*      Signos      */
 
 "("     { return new Symbol(sym.P_LEFT, yycolumn, yyline, yytext()); }
 ")"     { return new Symbol(sym.P_RIGHT, yycolumn, yyline, yytext()); }
 ";"     { return new Symbol(sym.T_SEMICOLON, yycolumn, yyline, yytext()); }
 ":"     { return new Symbol(sym.T_COLON, yycolumn, yyline, yytext()); }
+"{"     { return new Symbol(sym.T_BRACKETIZ, yycolumn, yyline, yytext());}
+"}"     { return new Symbol(sym.T_BRACKETDER, yycolumn, yyline, yytext());}
 
 /*      Simbolos        */
 
 "+"     { return new Symbol(sym.T_PLUS, yycolumn, yyline, yytext()); }
 "-"     { return new Symbol(sym.T_MINUS, yycolumn, yyline, yytext()); }
-"*"     { return new Symbol(sym.T_TIMES, yycolumn, yyline, yytext()); }
 "/"     { return new Symbol(sym.T_DIVIDE, yycolumn, yyline, yytext()); }
 "**"    { return new Symbol(sym.T_POW, yycolumn, yyline, yytext()); }
+"*"     { return new Symbol(sym.T_TIMES, yycolumn, yyline, yytext()); }
 "%"     { return new Symbol(sym.T_MOD, yycolumn, yyline, yytext()); }
 
 /*      Incremento y Decremento     */

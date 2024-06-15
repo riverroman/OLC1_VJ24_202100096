@@ -1,4 +1,3 @@
-
 package Simbolo;
 
 import java.util.HashMap;
@@ -6,7 +5,7 @@ import java.util.HashMap;
 public class tablaSimbolos {
     
     private tablaSimbolos tablaAnterior;
-    private HashMap<String, Object> tablaActual;
+    private HashMap<String, Simbolo> tablaActual;
     private String nombre;
     
     public tablaSimbolos(){
@@ -24,7 +23,7 @@ public class tablaSimbolos {
         return tablaAnterior;
     }
 
-    public HashMap<String, Object> getTablaActual() {
+    public HashMap<String, Simbolo> getTablaActual() {
         return tablaActual;
     }
 
@@ -36,7 +35,7 @@ public class tablaSimbolos {
         this.tablaAnterior = tablaAnterior;
     }
 
-    public void setTablaActual(HashMap<String, Object> tablaActual) {
+    public void setTablaActual(HashMap<String, Simbolo> tablaActual) {
         this.tablaActual = tablaActual;
     }
 
@@ -45,7 +44,7 @@ public class tablaSimbolos {
     }
     
     public boolean setVariable(Simbolo simbolo){
-        Simbolo busqueda = (Simbolo) this.tablaActual.get(simbolo.getId().toLowerCase());
+        Simbolo busqueda = this.tablaActual.get(simbolo.getId().toLowerCase());
         if(busqueda == null){
             this.tablaActual.put(simbolo.getId().toLowerCase(), simbolo);
             return true;
@@ -54,11 +53,12 @@ public class tablaSimbolos {
     }
     
     public Simbolo getVariable(String id){
-        Simbolo busqueda = (Simbolo) this.tablaActual.get(id.toLowerCase());
+        Simbolo busqueda = this.tablaActual.get(id.toLowerCase());
         if(busqueda != null){
             return  busqueda;
+        } else if (this.tablaAnterior != null) {
+            return this.tablaAnterior.getVariable(id);
         }
         return  null;
     }
-    
 }

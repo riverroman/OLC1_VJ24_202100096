@@ -306,7 +306,7 @@ public class Aritmeticas extends Instruccion {
                     }
                     case tipoDato.DECIMAL -> {
                         this.tipo.setTipo(tipoDato.DECIMAL);
-                        return (double) op2 * (double) op2;
+                        return (double) op1 * (double) op2;
                     }
                     case tipoDato.CARACTER -> {
                         this.tipo.setTipo(tipoDato.CARACTER);

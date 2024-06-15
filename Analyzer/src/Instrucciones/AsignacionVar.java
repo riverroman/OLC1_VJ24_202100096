@@ -25,7 +25,7 @@ public class AsignacionVar extends Instruccion {
         
         //Verificar si la variable es Mutable
         if(!variable.isMutable()){
-            return new Errores("SEMANTICO", "No se puede asignar un valor a la variable: " + id + " por ser Constante:", this.linea, this.columna);
+            return new Errores("SEMANTICO", "No se puede asignar un valor a la variable: " + id + " por ser Constante", this.linea, this.columna);
         }
         
         // Interpretacion del nuevo valor a Asignar

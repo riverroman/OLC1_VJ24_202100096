@@ -50,7 +50,7 @@ public class Arbol {
     public void setErrores(LinkedList<Errores> errores) {
         this.errores = errores;
     }
-       
+    
     public void Print(String valor){
         this.consola += valor + "\n";
     }

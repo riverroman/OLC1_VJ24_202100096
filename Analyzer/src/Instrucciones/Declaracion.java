@@ -39,7 +39,7 @@ public class Declaracion extends Instruccion {
 
         boolean creacion = tabla.setVariable(s);
         if (!creacion) {
-            return new Errores("SEMANTICO", "Variable ya existente", this.linea, this.columna);
+            return new Errores("SEMANTICO", "Variable ya existente: " + identificador, this.linea, this.columna);
         }
         return null;
     }
