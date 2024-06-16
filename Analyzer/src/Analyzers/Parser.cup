@@ -1,6 +1,6 @@
 package Analyzers;
 
-import java_cup.runtime.*;
+import java_cup.runtime.Symbol;
 import java.util.LinkedList;
 import Abstracto.Instruccion;
 import Simbolo.Tipo;
@@ -11,6 +11,7 @@ import Expresiones.Logicos;
 import Expresiones.Operadores;
 import Expresiones.OperadoresRelacionales;
 import Expresiones.OperadoresLogicos;
+import Excepciones.Errores;
 
 //Instrucciones
 import Instrucciones.Print;
@@ -37,12 +38,14 @@ parser code
     Lexer l;
     Parser(Lexer l){this.l = l;}
 
+    public LinkedList<Errores> ListaErrores = new LinkedList<>();
+
     public void syntax_error(Symbol s){ 
-        System.out.println("Error Sintactico en la Linea | " + (s.left) + " Columna | " + s.right+ " No se esperaba este componente | " + s.value); 
+        ListaErrores.add(new Errores("SINTACTICO RECUPERABLE", "No se esperaba el componente: " + s.value, s.left, s.right));
     } 
 
-    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
-        System.out.println("Error sintactico irrecuperable en la Linea | " + (s.left)+ " Columna | "+ s.right+" Componente | " + s.value + " | No reconocido"); 
+    public void unrecovered_syntax_error(Symbol s){ 
+        ListaErrores.add(new Errores("SINTACTICO NO RECUPERABLE", "No se esperaba el componente: " + s.value, s.left, s.right));
     }  
 :}
 
@@ -108,7 +111,9 @@ INSTRUCCION ::= IMPRIMIR:a                                            {: RESULT 
     |           BREAK:a                                               {: RESULT = a; :}
     |           CONTINUE:a                                            {: RESULT = a; :}
     |           INCREMENTO:a                                          {: RESULT = a; :}
-    |           DECREMENTO:a                                          {: RESULT = a; :}
+    |           DECREMENTO:a                                          {: RESULT = a; :}                                     
+    |           error
+    |           error T_SEMICOLON 
 ;
 
 IMPRIMIR ::= T_PRINTLN P_LEFT EXPRESION:a P_RIGHT T_SEMICOLON       {: RESULT = new Print(a,aleft,aright); :}

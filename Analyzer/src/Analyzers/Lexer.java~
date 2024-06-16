@@ -6,6 +6,8 @@
 package Analyzers;
 
 import java_cup.runtime.*;
+import java.util.LinkedList;
+import Excepciones.Errores;
 
 
 @SuppressWarnings("fallthrough")
@@ -377,7 +379,8 @@ public class Lexer implements java_cup.runtime.Scanner {
   private boolean zzEOFDone;
 
   /* user code: */
-
+    public LinkedList<Errores> ListaErrores = new LinkedList<>();
+    
 
 
   /**
@@ -389,6 +392,7 @@ public class Lexer implements java_cup.runtime.Scanner {
   
     yyline = 1;
     yycolumn = 1;
+    ListaErrores = new LinkedList<>();
 
     this.zzReader = in;
   }
@@ -810,7 +814,7 @@ public class Lexer implements java_cup.runtime.Scanner {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
-            { System.out.println("Error Lexico: " + yytext() + " | Fila:" + yyline + " | Columna: " + yycolumn);
+            { ListaErrores.add(new Errores("LEXICO ", "Caracter Desconocido: " + yytext(), yycolumn, yyline ));
             }
           // fall through
           case 51: break;

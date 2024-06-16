@@ -49,7 +49,7 @@ public class Errores {
 
     @Override
     public String toString(){
-        return "|Error|" + " |Tipo: " + tipo + " |Descripcion: " + descripcion + " |Linea: " + columna + " |Columna: " + linea;
+        return "|Error|" + " |Tipo: " + tipo + " |Descripcion: " + descripcion + " |Linea: " + columna + " |Columna: " + linea ;
     } 
     
 }

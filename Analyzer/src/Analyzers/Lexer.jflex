@@ -2,17 +2,21 @@
 package Analyzers;
 
 import java_cup.runtime.*;
+import java.util.LinkedList;
+import Excepciones.Errores;
 
 %%	
 
 %{
-
+    public LinkedList<Errores> ListaErrores = new LinkedList<>();
+    
 %}
 
 %init{
 
     yyline = 1;
     yycolumn = 1;
+    ListaErrores = new LinkedList<>();
 
 %init}
 
@@ -119,4 +123,5 @@ boleano = true|false
 "/*" [^*]* ("*" [^/]+)* "*/"        {/* Se ignora comentario multilineas */}
 
 /*  Manejo de Errores Lexicos */
-.           	{ System.out.println("Error Lexico: " + yytext() + " | Fila:" + yyline + " | Columna: " + yycolumn); }
+
+.  { ListaErrores.add(new Errores("LEXICO ", "Caracter Desconocido: " + yytext(), yycolumn, yyline ));}
