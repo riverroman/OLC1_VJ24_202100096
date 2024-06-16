@@ -16,13 +16,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.HashMap;
 import java.util.LinkedList;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 
 public class Principal extends javax.swing.JFrame {
 
@@ -412,10 +410,6 @@ public class Principal extends javax.swing.JFrame {
             }
         }
     }
-
-
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BTNCARGARARCHIVO1;
     private javax.swing.JButton BTNINTERPRETAR;
