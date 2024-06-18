@@ -123,7 +123,7 @@ DECLARACION ::= MUTABILIDAD:m T_ID:b T_COLON TIPOSDECLARACION:a T_EQUAL EXPRESIO
         |       MUTABILIDAD:m T_ID:b T_COLON TIPOSDECLARACION:a T_SEMICOLON                         {: Boolean mut = (Boolean) m; RESULT = new Declaracion(b, null, a, mut.booleanValue(), aleft, aright); :}
 ;
 
-ASIGNACION ::= T_ID:a T_EQUAL EXPRESION:b T_SEMICOLON {: RESULT = new AsignacionVar(a,b, aleft, aright); :}
+ASIGNACION ::= T_ID:a T_EQUAL EXPRESION:b T_SEMICOLON {: RESULT = new AsignacionVar(a, b, aleft, aright); :}
 ;
 
 MUTABILIDAD ::= T_VAR   {: RESULT = new Boolean(true); :}

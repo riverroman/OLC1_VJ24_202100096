@@ -12,7 +12,7 @@ public class Else extends Instruccion {
         super(new Tipo(tipoDato.VOID), linea, columna);
         this.instrucciones = instrucciones;
     }
-      
+     
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla){
         var newTabla = new tablaSimbolos(tabla);
