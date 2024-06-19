@@ -67,6 +67,11 @@ boleano = true|false
 "while"     { return new Symbol(sym.T_WHILE, yycolumn, yyline, yytext());    }
 "do"        { return new Symbol(sym.T_DO, yycolumn, yyline, yytext());       }
 
+/*  Palabras Reservadas para Funciones Nativas      */
+
+"round"     { return new Symbol(sym.T_ROUND, yycolumn, yyline, yytext()); }
+
+
 /*      Signos      */
 
 "("     { return new Symbol(sym.P_LEFT, yycolumn, yyline, yytext()); }

@@ -14,17 +14,39 @@ public class Main {
     
     public static void main(String[] args) throws Exception {
         
-        
        
-        String entrada = """
-                         println("River Roman");
-                         println("Hola");
-                         """;
         
-        analizar(entrada);
+        String entrada = """
+                         
+        var numero : double = 18.45;
+        var iteracion : int = 0;
+        
+        do {
+            //println("Iteracion: " + iteracion);
+            //println("Numero antes de redondear: " + numero);
+            //println("Numero redondeado: " + round(numero));
+            if(round(numero) == 19) {
+                println("El numero es igual a 19");
+            } else {
+                println("Numero no iguales");
+            }
+        
+            numero = numero + 0.1;
+            iteracion = iteracion + 1;
+        }while(iteracion < 5);
+                
+        println(""); 
+        println(""); 
+        println(""); 
+        println(round(2.2));
+        println(round(3.5));
+        println(round(4.8));
+                         
+        """;
+        
+        analizar(entrada); 
         
         //analizadores("src/Analyzers/", "Lexer.jflex", "Parser.cup");    
-        
         
         /*Interfaz Grafica*/
         
@@ -64,7 +86,6 @@ public class Main {
                     System.out.println(error);
                 }    
             }
-            
             for(Errores error : lista){
                 System.out.println(error);
             }
@@ -75,4 +96,6 @@ public class Main {
             System.out.println(e);
         }
     }
+    
+    
 }

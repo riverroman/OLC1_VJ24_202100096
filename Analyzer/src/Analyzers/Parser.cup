@@ -31,6 +31,7 @@ import Instrucciones.DoWhile;
 import Expresiones.Nativo;
 import Expresiones.AccesoVar;
 import Expresiones.Casteo;
+import Expresiones.Round;
 
 parser code 
 {:
@@ -65,6 +66,7 @@ terminal String T_INCREMENT, T_DECREMENT;
 terminal String T_IF, T_ELSE, T_BRACKETIZ, T_BRACKETDER;
 terminal String T_FOR;
 terminal String T_BREAK, T_CONTINUE, T_WHILE, T_DO;
+terminal String T_ROUND;
 terminal String UMENOS;
 
 /*      No Terminales       */
@@ -74,9 +76,10 @@ non terminal Instruccion INSTRUCCION;
 non terminal Instruccion EXPRESION;
 non terminal Instruccion IMPRIMIR, TIPOS, ARITMETICAS, RELACIONALES, LOGICOS;
 non terminal Instruccion DECLARACION, ASIGNACION, CASTEO, INCREMENTO, DECREMENTO;
-non terminal Tipo TIPOSDECLARACION;
 non terminal Instruccion IF, ELSE, FOR, BREAK, DECLARACIONFOR, CONTINUE, WHILE, DOWHILE;
+non terminal Instruccion ROUND;
 non terminal MUTABILIDAD;
+non terminal Tipo TIPOSDECLARACION;
 
 /*      Manejo de Precedencia   */
 
@@ -111,7 +114,7 @@ INSTRUCCION ::= IMPRIMIR:a                                            {: RESULT 
     |           BREAK:a                                               {: RESULT = a; :}
     |           CONTINUE:a                                            {: RESULT = a; :}
     |           INCREMENTO:a                                          {: RESULT = a; :}
-    |           DECREMENTO:a                                          {: RESULT = a; :}                                     
+    |           DECREMENTO:a                                          {: RESULT = a; :} 
     |           error
     |           error T_SEMICOLON 
 ;
@@ -181,6 +184,7 @@ EXPRESION ::= T_MINUS EXPRESION:a                   {: RESULT = new Aritmeticas(
        |      RELACIONALES:a                        {: RESULT = a; :}
        |      LOGICOS:a                             {: RESULT = a; :}
        |      CASTEO:a                              {: RESULT = a; :}
+       |      ROUND:a                               {: RESULT = a; :}
 ;
 
 ARITMETICAS ::=  EXPRESION:a T_PLUS EXPRESION:b      {: RESULT = new Aritmeticas(a,b, Operadores.SUMA, aleft, aright); :}    
@@ -215,3 +219,9 @@ TIPOS ::=
 
 CASTEO ::= P_LEFT TIPOSDECLARACION:a P_RIGHT EXPRESION:b  {: RESULT = new Casteo(b, a, aleft, aright); :}
 ;
+
+/*      SEGUNDA FASE    */
+
+ROUND::=  T_ROUND P_LEFT EXPRESION:a P_RIGHT              {: RESULT = new Round(a, aleft, aright); :}
+;
+
