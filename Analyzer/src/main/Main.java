@@ -14,8 +14,6 @@ public class Main {
     
     public static void main(String[] args) throws Exception {
         
-       
-        
         String entrada = """
                          
         var numero : double = 18.45;
@@ -35,12 +33,6 @@ public class Main {
             iteracion = iteracion + 1;
         }while(iteracion < 5);
                 
-        println(""); 
-        println(""); 
-        println(""); 
-        println(round(2.2));
-        println(round(3.5));
-        println(round(4.8));
                          
         """;
         
