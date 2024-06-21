@@ -49,6 +49,7 @@ boleano = true|false
 "string"    { return new Symbol(sym.T_STRING, yycolumn, yyline, yytext());   }
 "bool"      { return new Symbol(sym.T_BOOL, yycolumn, yyline, yytext());     }
 "char"      { return new Symbol(sym.T_CHARACTER, yycolumn, yyline, yytext());}
+"void"      { return new Symbol(sym.T_VOID, yycolumn, yyline, yytext());     }
 
 
 /*  Palabras Reservadas Sentencias de Control   */
@@ -80,7 +81,10 @@ boleano = true|false
 ":"     { return new Symbol(sym.T_COLON, yycolumn, yyline, yytext()); }
 "{"     { return new Symbol(sym.T_BRACKETIZ, yycolumn, yyline, yytext());}
 "}"     { return new Symbol(sym.T_BRACKETDER, yycolumn, yyline, yytext());}
-
+"["     { return new Symbol(sym.T_BRACEIZ, yycolumn, yyline, yytext());}
+"]"     { return new Symbol(sym.T_BRACEDER, yycolumn, yyline, yytext());}
+","     { return new Symbol(sym.T_COMMA, yycolumn, yyline, yytext());}
+ 
 /*      Simbolos        */
 
 "+"     { return new Symbol(sym.T_PLUS, yycolumn, yyline, yytext()); }

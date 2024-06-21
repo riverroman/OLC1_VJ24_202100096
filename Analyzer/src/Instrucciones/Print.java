@@ -16,10 +16,26 @@ public class Print extends Instruccion{
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla) {
         var resultado = this.expresion.interpretar(arbol, tabla);
+        
         if (resultado instanceof Errores) {
             return resultado;
         }
-        arbol.Print(resultado.toString());
+        
+        if (resultado instanceof Object[]) {
+            Object[] vector = (Object[]) resultado;
+            StringBuilder sb = new StringBuilder();
+            sb.append("[");
+            for (int i = 0; i < vector.length; i++) {
+                sb.append(vector[i].toString());
+                if (i < vector.length - 1) {
+                    sb.append(", ");
+                }
+            }
+            sb.append("]");
+            arbol.Print(sb.toString());
+        } else {
+            arbol.Print(resultado.toString());
+        }
         return null;
     }
    

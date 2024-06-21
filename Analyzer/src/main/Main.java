@@ -15,30 +15,14 @@ public class Main {
     public static void main(String[] args) throws Exception {
         
         String entrada = """
+            
                          
-        var numero : double = 18.45;
-        var iteracion : int = 0;
-        
-        do {
-            //println("Iteracion: " + iteracion);
-            //println("Numero antes de redondear: " + numero);
-            //println("Numero redondeado: " + round(numero));
-            if(round(numero) == 19) {
-                println("El numero es igual a 19");
-            } else {
-                println("Numero no iguales");
-            }
-        
-            numero = numero + 0.1;
-            iteracion = iteracion + 1;
-        }while(iteracion < 5);
-                
-                         
+                        
         """;
         
-        analizar(entrada); 
+        //analizar(entrada); 
         
-        //analizadores("src/Analyzers/", "Lexer.jflex", "Parser.cup");    
+        analizadores("src/Analyzers/", "Lexer.jflex", "Parser.cup");    
         
         /*Interfaz Grafica*/
         

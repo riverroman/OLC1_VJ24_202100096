@@ -17,7 +17,16 @@ public class Nativo extends Instruccion {
     
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla){
-        return this.valor;
+        return valor;
+    }
+    
+    public Object getValor() {
+        return valor;
+    }
+
+    @Override
+    public Tipo getTipo() {
+        return this.tipo;
     }
     
 }

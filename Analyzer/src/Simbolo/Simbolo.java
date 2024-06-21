@@ -49,7 +49,7 @@ public class Simbolo {
     public void setValor(Object valor) {
         this.valor = valor;
     }
-
+    
     public void setMutability(boolean mutabilidad) {
         this.mutabilidad = mutabilidad;
     }

@@ -26,6 +26,7 @@ import Instrucciones.Break;
 import Instrucciones.Continue;
 import Instrucciones.While;
 import Instrucciones.DoWhile;
+import Instrucciones.Metodo;
 
 //Expresiones
 import Expresiones.Nativo;
@@ -65,19 +66,14 @@ terminal String T_INT, T_DOUBLE, T_STRING, T_BOOL, T_ID, T_VAR, T_CONST, T_CHARA
 terminal String T_INCREMENT, T_DECREMENT;
 terminal String T_IF, T_ELSE, T_BRACKETIZ, T_BRACKETDER;
 terminal String T_FOR;
-terminal String T_BREAK, T_CONTINUE, T_WHILE, T_DO;
-terminal String T_ROUND;
+terminal String T_BREAK, T_CONTINUE, T_WHILE, T_DO, T_BRACEIZ, T_BRACEDER;
+terminal String T_ROUND, T_COMMA, T_VOID;
 terminal String UMENOS;
 
 /*      No Terminales       */
 
 non terminal LinkedList<Instruccion> INICIO, LISTAINSTRUCCIONES;
-non terminal Instruccion INSTRUCCION;
-non terminal Instruccion EXPRESION;
-non terminal Instruccion IMPRIMIR, TIPOS, ARITMETICAS, RELACIONALES, LOGICOS;
-non terminal Instruccion DECLARACION, ASIGNACION, CASTEO, INCREMENTO, DECREMENTO;
-non terminal Instruccion IF, ELSE, FOR, BREAK, DECLARACIONFOR, CONTINUE, WHILE, DOWHILE;
-non terminal Instruccion ROUND;
+non terminal Instruccion INSTRUCCION, EXPRESION, IMPRIMIR, TIPOS, ARITMETICAS, RELACIONALES, LOGICOS, DECLARACION, ASIGNACION, CASTEO, INCREMENTO, DECREMENTO, IF, ELSE, FOR, BREAK, DECLARACIONFOR, CONTINUE, WHILE, DOWHILE, ROUND, METODO;
 non terminal MUTABILIDAD;
 non terminal Tipo TIPOSDECLARACION;
 
@@ -114,7 +110,8 @@ INSTRUCCION ::= IMPRIMIR:a                                            {: RESULT 
     |           BREAK:a                                               {: RESULT = a; :}
     |           CONTINUE:a                                            {: RESULT = a; :}
     |           INCREMENTO:a                                          {: RESULT = a; :}
-    |           DECREMENTO:a                                          {: RESULT = a; :} 
+    |           DECREMENTO:a                                          {: RESULT = a; :}
+    |           METODO:a                                              {: RESULT = a; :}
     |           error
     |           error T_SEMICOLON 
 ;
@@ -138,6 +135,7 @@ TIPOSDECLARACION::= T_INT           {: RESULT = new Tipo(tipoDato.ENTERO);   :}
             |       T_STRING        {: RESULT = new Tipo(tipoDato.CADENA);   :}
             |       T_BOOL          {: RESULT = new Tipo(tipoDato.BOOLEANO); :}
             |       T_CHARACTER     {: RESULT = new Tipo(tipoDato.CARACTER); :}
+            |       T_VOID          {: RESULT = new Tipo(tipoDato.VOID); :}
 ;
 
 INCREMENTO ::= T_ID:a T_INCREMENT T_SEMICOLON              {: RESULT = new Incremento(a, aleft, aright); :}
@@ -209,8 +207,7 @@ LOGICOS ::=      EXPRESION:a T_OR EXPRESION:b    {: RESULT = new Logicos(a,b, Op
        |         T_NOT EXPRESION:a               {: RESULT = new Logicos(a,   OperadoresLogicos.NOT, aleft, aright); :}
 ;
 
-TIPOS ::=
-    |  T_ENTERO:a     {: RESULT = new Nativo(Integer.parseInt(a), new Tipo(tipoDato.ENTERO), aleft, aright); :}
+TIPOS ::=  T_ENTERO:a     {: RESULT = new Nativo(Integer.parseInt(a), new Tipo(tipoDato.ENTERO), aleft, aright); :}
     |  T_CADENA:a     {: RESULT = new Nativo(a, new Tipo(tipoDato.CADENA), aleft, aright); :}
     |  T_DECIMAL:a    {: RESULT = new Nativo(new Double(a), new Tipo(tipoDato.DECIMAL), aleft, aright); :}
     |  T_CARACTER:a   {: RESULT = new Nativo(a, new Tipo(tipoDato.CARACTER), aleft, aright); :}
@@ -222,6 +219,8 @@ CASTEO ::= P_LEFT TIPOSDECLARACION:a P_RIGHT EXPRESION:b  {: RESULT = new Casteo
 
 /*      SEGUNDA FASE    */
 
-ROUND::=  T_ROUND P_LEFT EXPRESION:a P_RIGHT              {: RESULT = new Round(a, aleft, aright); :}
+ROUND ::=  T_ROUND P_LEFT EXPRESION:a P_RIGHT              {: RESULT = new Round(a, aleft, aright); :}
 ;
 
+METODO ::= TIPOSDECLARACION:a T_ID:b P_LEFT  P_RIGHT T_BRACKETIZ LISTAINSTRUCCIONES:c T_BRACKETDER   {: RESULT = new Metodo(b,c,a, aleft, aright); :}
+;
