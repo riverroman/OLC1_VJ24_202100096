@@ -27,6 +27,10 @@ import Instrucciones.Continue;
 import Instrucciones.While;
 import Instrucciones.DoWhile;
 import Instrucciones.Metodo;
+import Instrucciones.DeclaracionLista;
+import Instrucciones.Append;
+import Instrucciones.AsignacionListas;
+import Instrucciones.AccesoListas;
 
 //Expresiones
 import Expresiones.Nativo;
@@ -67,13 +71,14 @@ terminal String T_INCREMENT, T_DECREMENT;
 terminal String T_IF, T_ELSE, T_BRACKETIZ, T_BRACKETDER;
 terminal String T_FOR;
 terminal String T_BREAK, T_CONTINUE, T_WHILE, T_DO, T_BRACEIZ, T_BRACEDER;
-terminal String T_ROUND, T_COMMA, T_VOID;
+terminal String T_ROUND, T_COMMA, T_VOID, T_LIST, T_NEW, T_DOT, T_APPEND;
 terminal String UMENOS;
 
 /*      No Terminales       */
 
 non terminal LinkedList<Instruccion> INICIO, LISTAINSTRUCCIONES;
 non terminal Instruccion INSTRUCCION, EXPRESION, IMPRIMIR, TIPOS, ARITMETICAS, RELACIONALES, LOGICOS, DECLARACION, ASIGNACION, CASTEO, INCREMENTO, DECREMENTO, IF, ELSE, FOR, BREAK, DECLARACIONFOR, CONTINUE, WHILE, DOWHILE, ROUND, METODO;
+non terminal Instruccion DECLARACION_LISTA, APPEND, ASIGNACION_LISTA, ACCESO_LISTA;
 non terminal MUTABILIDAD;
 non terminal Tipo TIPOSDECLARACION;
 
@@ -102,6 +107,9 @@ LISTAINSTRUCCIONES ::= LISTAINSTRUCCIONES:a INSTRUCCION:b       {: RESULT = a;  
 
 INSTRUCCION ::= IMPRIMIR:a                                            {: RESULT = a; :}
     |           DECLARACION:a                                         {: RESULT = a; :}
+    |           DECLARACION_LISTA:a                                   {: RESULT = a; :}
+    |           APPEND:a                                              {: RESULT = a; :}
+    |           ASIGNACION_LISTA:a                                    {: RESULT = a; :}
     |           ASIGNACION:a                                          {: RESULT = a; :}
     |           IF:a                                                  {: RESULT = a; :}
     |           FOR:a                                                 {: RESULT = a; :}
@@ -123,7 +131,19 @@ DECLARACION ::= MUTABILIDAD:m T_ID:b T_COLON TIPOSDECLARACION:a T_EQUAL EXPRESIO
         |       MUTABILIDAD:m T_ID:b T_COLON TIPOSDECLARACION:a T_SEMICOLON                         {: Boolean mut = (Boolean) m; RESULT = new Declaracion(b, null, a, mut.booleanValue(), aleft, aright); :}
 ;
 
+DECLARACION_LISTA::= T_LIST T_LESSTHAN TIPOSDECLARACION:a T_GREATERTHAN T_ID:b T_EQUAL T_NEW T_LIST P_LEFT P_RIGHT T_SEMICOLON {: RESULT = new DeclaracionLista(b,a,aleft,aright); :}
+;
+
+APPEND::= T_ID:a T_DOT T_APPEND P_LEFT EXPRESION:b P_RIGHT T_SEMICOLON   {: RESULT = new Append(a,b,aleft,aright); :}
+;
+
 ASIGNACION ::= T_ID:a T_EQUAL EXPRESION:b T_SEMICOLON {: RESULT = new AsignacionVar(a, b, aleft, aright); :}
+;
+
+ASIGNACION_LISTA::= T_ID:a T_BRACEIZ EXPRESION:b T_BRACEDER T_EQUAL EXPRESION:c T_SEMICOLON {: RESULT = new AsignacionListas(a, b, c, aleft, aright); :}
+;
+
+ACCESO_LISTA::= T_ID:a T_BRACEIZ EXPRESION:b T_BRACEDER {: RESULT = new AccesoListas(a,b, aleft,aright); :}
 ;
 
 MUTABILIDAD ::= T_VAR   {: RESULT = new Boolean(true); :}
@@ -183,6 +203,7 @@ EXPRESION ::= T_MINUS EXPRESION:a                   {: RESULT = new Aritmeticas(
        |      LOGICOS:a                             {: RESULT = a; :}
        |      CASTEO:a                              {: RESULT = a; :}
        |      ROUND:a                               {: RESULT = a; :}
+       |      ACCESO_LISTA:a                        {: RESULT = a; :}
 ;
 
 ARITMETICAS ::=  EXPRESION:a T_PLUS EXPRESION:b      {: RESULT = new Aritmeticas(a,b, Operadores.SUMA, aleft, aright); :}    

@@ -72,6 +72,12 @@ boleano = true|false
 
 "round"     { return new Symbol(sym.T_ROUND, yycolumn, yyline, yytext()); }
 
+/*  Palabras Reservadas Sentencias List   */
+
+"List"      { return new Symbol(sym.T_LIST, yycolumn, yyline, yytext()); }
+"new"       { return new Symbol(sym.T_NEW, yycolumn, yyline, yytext()); }
+"."         { return new Symbol(sym.T_DOT, yycolumn, yyline, yytext()); }
+"append"    { return new Symbol(sym.T_APPEND, yycolumn, yyline, yytext()); }
 
 /*      Signos      */
 

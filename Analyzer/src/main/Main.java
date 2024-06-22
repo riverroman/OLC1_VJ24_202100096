@@ -15,14 +15,14 @@ public class Main {
     public static void main(String[] args) throws Exception {
         
         String entrada = """
-            
                          
-                        
+        
+                                           
         """;
         
-        //analizar(entrada); 
+        analizar(entrada); 
         
-        analizadores("src/Analyzers/", "Lexer.jflex", "Parser.cup");    
+        //analizadores("src/Analyzers/", "Lexer.jflex", "Parser.cup");    
         
         /*Interfaz Grafica*/
         

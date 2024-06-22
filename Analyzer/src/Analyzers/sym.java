@@ -15,6 +15,8 @@ public class sym {
   public static final int T_ELSE = 40;
   public static final int T_NOTEQUAL = 19;
   public static final int T_CONTINUE = 45;
+  public static final int T_LIST = 53;
+  public static final int T_APPEND = 56;
   public static final int P_RIGHT = 8;
   public static final int T_XOR = 27;
   public static final int T_INT = 29;
@@ -27,12 +29,14 @@ public class sym {
   public static final int T_CONST = 35;
   public static final int T_CADENA = 4;
   public static final int T_PRINTLN = 2;
-  public static final int UMENOS = 53;
+  public static final int UMENOS = 57;
   public static final int T_DO = 47;
+  public static final int T_DOT = 55;
   public static final int T_INCREMENT = 37;
   public static final int EOF = 0;
   public static final int T_MINUS = 13;
   public static final int error = 1;
+  public static final int T_NEW = 54;
   public static final int T_BRACEDER = 49;
   public static final int T_MOD = 17;
   public static final int T_COMMA = 51;
@@ -116,6 +120,10 @@ public class sym {
   "T_ROUND",
   "T_COMMA",
   "T_VOID",
+  "T_LIST",
+  "T_NEW",
+  "T_DOT",
+  "T_APPEND",
   "UMENOS"
   };
 }

@@ -36,7 +36,7 @@ public class AsignacionVar extends Instruccion {
         
         // Validación de tipos
         if(variable.getTipo().getTipo() != this.expresion.tipo.getTipo()){
-            return new Errores("SEMANTICO", "Tipo erróneo de asignación para la variable: " + id, this.linea, this.columna);
+            return new Errores("SEMANTICO", "Tipo erroneo de asignacion para la variable: " + id, this.linea, this.columna);
         }
         
         this.tipo.setTipo(variable.getTipo().getTipo());
