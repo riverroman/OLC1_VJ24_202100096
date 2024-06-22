@@ -1,5 +1,6 @@
 package Analyzers;
 
+import java.util.*;
 import java_cup.runtime.Symbol;
 import java.util.LinkedList;
 import Abstracto.Instruccion;
@@ -31,6 +32,8 @@ import Instrucciones.DeclaracionLista;
 import Instrucciones.Append;
 import Instrucciones.AsignacionListas;
 import Instrucciones.AccesoListas;
+import Instrucciones.DeclaracionVectores;
+import Instrucciones.DeclaracionVectores2;
 
 //Expresiones
 import Expresiones.Nativo;
@@ -77,8 +80,10 @@ terminal String UMENOS;
 /*      No Terminales       */
 
 non terminal LinkedList<Instruccion> INICIO, LISTAINSTRUCCIONES;
+non terminal List<Instruccion> LISTA_VALORES;
+non terminal List<List<Instruccion>> LISTA_VALORES_2D;
 non terminal Instruccion INSTRUCCION, EXPRESION, IMPRIMIR, TIPOS, ARITMETICAS, RELACIONALES, LOGICOS, DECLARACION, ASIGNACION, CASTEO, INCREMENTO, DECREMENTO, IF, ELSE, FOR, BREAK, DECLARACIONFOR, CONTINUE, WHILE, DOWHILE, ROUND, METODO;
-non terminal Instruccion DECLARACION_LISTA, APPEND, ASIGNACION_LISTA, ACCESO_LISTA;
+non terminal Instruccion DECLARACION_LISTA, APPEND, ASIGNACION_LISTA, ACCESO_LISTA, DECLARACION_VECTORES;
 non terminal MUTABILIDAD;
 non terminal Tipo TIPOSDECLARACION;
 
@@ -108,6 +113,7 @@ LISTAINSTRUCCIONES ::= LISTAINSTRUCCIONES:a INSTRUCCION:b       {: RESULT = a;  
 INSTRUCCION ::= IMPRIMIR:a                                            {: RESULT = a; :}
     |           DECLARACION:a                                         {: RESULT = a; :}
     |           DECLARACION_LISTA:a                                   {: RESULT = a; :}
+    |           DECLARACION_VECTORES:a                                {: RESULT = a; :}
     |           APPEND:a                                              {: RESULT = a; :}
     |           ASIGNACION_LISTA:a                                    {: RESULT = a; :}
     |           ASIGNACION:a                                          {: RESULT = a; :}
@@ -132,6 +138,18 @@ DECLARACION ::= MUTABILIDAD:m T_ID:b T_COLON TIPOSDECLARACION:a T_EQUAL EXPRESIO
 ;
 
 DECLARACION_LISTA::= T_LIST T_LESSTHAN TIPOSDECLARACION:a T_GREATERTHAN T_ID:b T_EQUAL T_NEW T_LIST P_LEFT P_RIGHT T_SEMICOLON {: RESULT = new DeclaracionLista(b,a,aleft,aright); :}
+;
+
+DECLARACION_VECTORES::= MUTABILIDAD:m T_ID:a T_COLON TIPOSDECLARACION:b T_BRACEIZ T_BRACEDER T_EQUAL T_BRACEIZ LISTA_VALORES:c T_BRACEDER T_SEMICOLON                   {: Boolean mut = (Boolean) m; RESULT = new DeclaracionVectores(a,b,c, mut.booleanValue(), aleft, aright); :}
+            | MUTABILIDAD:m T_ID:a T_COLON TIPOSDECLARACION:b T_BRACEIZ T_BRACEDER T_BRACEIZ T_BRACEDER T_EQUAL T_BRACEIZ LISTA_VALORES_2D:c T_BRACEDER T_SEMICOLON     {: Boolean mut = (Boolean) m; RESULT = new DeclaracionVectores2(a, b, c, mut.booleanValue(), aleft, aright); :}
+;
+
+LISTA_VALORES::= LISTA_VALORES:a T_COMMA  EXPRESION:b   {: List<Instruccion> lista = (List<Instruccion>) a; lista.add((Instruccion) b); RESULT = lista; :}
+            |    EXPRESION:a                            {: List<Instruccion> lista = new LinkedList<>(); lista.add((Instruccion) a); RESULT = lista;  :}
+;
+
+LISTA_VALORES_2D::= LISTA_VALORES_2D:a T_COMMA T_BRACEIZ LISTA_VALORES:b T_BRACEDER {: List<List<Instruccion>> lista = (List<List<Instruccion>>) a; lista.add((List<Instruccion>) b); RESULT = lista; :}
+            |    T_BRACEIZ LISTA_VALORES:a T_BRACEDER {: List<List<Instruccion>> lista = new LinkedList<>(); lista.add((List<Instruccion>) a); RESULT = lista; :}
 ;
 
 APPEND::= T_ID:a T_DOT T_APPEND P_LEFT EXPRESION:b P_RIGHT T_SEMICOLON   {: RESULT = new Append(a,b,aleft,aright); :}

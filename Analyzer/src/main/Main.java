@@ -15,9 +15,17 @@ public class Main {
     public static void main(String[] args) throws Exception {
         
         String entrada = """
-                         
-        
-                                           
+
+         var vector1 : string [] = [ "Hola", "Mundo" ];
+         var vector2 : int [] = [ 2, 5, 3, 1, 4 ];
+         const vector3 : double [] = [ (double)1, 2.0, 3.5, 4.5, 5.2 ];
+         const vector4:int [][] = [ [ 1, 2 ], [ 3, 4 ] ];                
+                                                                                  
+         println(vector1);         
+         println(vector2);         
+         println(vector3);         
+         println(vector4);         
+                                                                                 
         """;
         
         analizar(entrada); 
