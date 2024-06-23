@@ -10,7 +10,7 @@ public class AsignacionVar extends Instruccion {
     private Instruccion expresion;
     
     public AsignacionVar(String id, Instruccion expresion, int linea, int columna){
-        super(new Tipo(tipoDato.VOID), linea, columna);
+        super(new Tipo(tipoDato.VOID), linea, columna); // Inicializa this.tipo
         this.id = id;
         this.expresion = expresion;
     }
@@ -35,13 +35,16 @@ public class AsignacionVar extends Instruccion {
         }
         
         // Validación de tipos
+        if(this.expresion.tipo == null) {
+            this.expresion.tipo = variable.getTipo();
+        }
+        
         if(variable.getTipo().getTipo() != this.expresion.tipo.getTipo()){
             return new Errores("SEMANTICO", "Tipo erroneo de asignacion para la variable: " + id, this.linea, this.columna);
         }
         
-        this.tipo.setTipo(variable.getTipo().getTipo());
+        this.tipo.setTipo(variable.getTipo().getTipo()); // Asegúrate de que this.tipo no es nulo
         variable.setValor(newValor);
         return  null;
     }
-    
 }

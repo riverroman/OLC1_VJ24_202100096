@@ -30,16 +30,17 @@ import Instrucciones.DoWhile;
 import Instrucciones.Metodo;
 import Instrucciones.DeclaracionLista;
 import Instrucciones.Append;
-import Instrucciones.AsignacionListas;
-import Instrucciones.AccesoListas;
 import Instrucciones.DeclaracionVectores;
 import Instrucciones.DeclaracionVectores2;
+import Instrucciones.AsignacionCombinada;
 
 //Expresiones
 import Expresiones.Nativo;
 import Expresiones.AccesoVar;
 import Expresiones.Casteo;
 import Expresiones.Round;
+import Expresiones.AccesoListas;
+import Expresiones.AccesoVector;
 
 parser code 
 {:
@@ -83,7 +84,8 @@ non terminal LinkedList<Instruccion> INICIO, LISTAINSTRUCCIONES;
 non terminal List<Instruccion> LISTA_VALORES;
 non terminal List<List<Instruccion>> LISTA_VALORES_2D;
 non terminal Instruccion INSTRUCCION, EXPRESION, IMPRIMIR, TIPOS, ARITMETICAS, RELACIONALES, LOGICOS, DECLARACION, ASIGNACION, CASTEO, INCREMENTO, DECREMENTO, IF, ELSE, FOR, BREAK, DECLARACIONFOR, CONTINUE, WHILE, DOWHILE, ROUND, METODO;
-non terminal Instruccion DECLARACION_LISTA, APPEND, ASIGNACION_LISTA, ACCESO_LISTA, DECLARACION_VECTORES;
+non terminal Instruccion DECLARACION_LISTA, APPEND, ACCESO_LISTA, DECLARACION_VECTORES;
+non terminal Instruccion ASIGNACION_LISTAVECTORES, ACCESO_VECTOR;
 non terminal MUTABILIDAD;
 non terminal Tipo TIPOSDECLARACION;
 
@@ -115,7 +117,7 @@ INSTRUCCION ::= IMPRIMIR:a                                            {: RESULT 
     |           DECLARACION_LISTA:a                                   {: RESULT = a; :}
     |           DECLARACION_VECTORES:a                                {: RESULT = a; :}
     |           APPEND:a                                              {: RESULT = a; :}
-    |           ASIGNACION_LISTA:a                                    {: RESULT = a; :}
+    |           ASIGNACION_LISTAVECTORES:a                            {: RESULT = a; :}
     |           ASIGNACION:a                                          {: RESULT = a; :}
     |           IF:a                                                  {: RESULT = a; :}
     |           FOR:a                                                 {: RESULT = a; :}
@@ -144,6 +146,10 @@ DECLARACION_VECTORES::= MUTABILIDAD:m T_ID:a T_COLON TIPOSDECLARACION:b T_BRACEI
             | MUTABILIDAD:m T_ID:a T_COLON TIPOSDECLARACION:b T_BRACEIZ T_BRACEDER T_BRACEIZ T_BRACEDER T_EQUAL T_BRACEIZ LISTA_VALORES_2D:c T_BRACEDER T_SEMICOLON     {: Boolean mut = (Boolean) m; RESULT = new DeclaracionVectores2(a, b, c, mut.booleanValue(), aleft, aright); :}
 ;
 
+ASIGNACION_LISTAVECTORES::= T_ID:a T_BRACEIZ EXPRESION:b T_BRACEDER T_EQUAL EXPRESION:c T_SEMICOLON                                         {: RESULT = new AsignacionCombinada(a, b, c, aleft, aright); :}
+        |           T_ID:a T_BRACEIZ EXPRESION:b T_BRACEDER T_BRACEIZ EXPRESION:c T_BRACEDER T_EQUAL EXPRESION:d T_SEMICOLON        {: RESULT = new AsignacionCombinada(a, b, c, d, aleft, aright); :}
+;
+
 LISTA_VALORES::= LISTA_VALORES:a T_COMMA  EXPRESION:b   {: List<Instruccion> lista = (List<Instruccion>) a; lista.add((Instruccion) b); RESULT = lista; :}
             |    EXPRESION:a                            {: List<Instruccion> lista = new LinkedList<>(); lista.add((Instruccion) a); RESULT = lista;  :}
 ;
@@ -156,12 +162,6 @@ APPEND::= T_ID:a T_DOT T_APPEND P_LEFT EXPRESION:b P_RIGHT T_SEMICOLON   {: RESU
 ;
 
 ASIGNACION ::= T_ID:a T_EQUAL EXPRESION:b T_SEMICOLON {: RESULT = new AsignacionVar(a, b, aleft, aright); :}
-;
-
-ASIGNACION_LISTA::= T_ID:a T_BRACEIZ EXPRESION:b T_BRACEDER T_EQUAL EXPRESION:c T_SEMICOLON {: RESULT = new AsignacionListas(a, b, c, aleft, aright); :}
-;
-
-ACCESO_LISTA::= T_ID:a T_BRACEIZ EXPRESION:b T_BRACEDER {: RESULT = new AccesoListas(a,b, aleft,aright); :}
 ;
 
 MUTABILIDAD ::= T_VAR   {: RESULT = new Boolean(true); :}
@@ -221,8 +221,13 @@ EXPRESION ::= T_MINUS EXPRESION:a                   {: RESULT = new Aritmeticas(
        |      LOGICOS:a                             {: RESULT = a; :}
        |      CASTEO:a                              {: RESULT = a; :}
        |      ROUND:a                               {: RESULT = a; :}
-       |      ACCESO_LISTA:a                        {: RESULT = a; :}
+       |      ACCESO_VECTOR:a                       {: RESULT = a; :}
 ;
+
+ACCESO_VECTOR::= T_ID:a T_BRACEIZ EXPRESION:b T_BRACEDER                                        {: RESULT = new AccesoVector(a,b, aleft, aright);   :}
+        |        T_ID:a T_BRACEIZ EXPRESION:b T_BRACEDER T_BRACEIZ EXPRESION:c T_BRACEDER       {: RESULT = new AccesoVector(a,b,c, aleft, aright); :}
+;
+
 
 ARITMETICAS ::=  EXPRESION:a T_PLUS EXPRESION:b      {: RESULT = new Aritmeticas(a,b, Operadores.SUMA, aleft, aright); :}    
        |         EXPRESION:a T_MINUS EXPRESION:b     {: RESULT = new Aritmeticas(a,b, Operadores.RESTA, aleft, aright); :}

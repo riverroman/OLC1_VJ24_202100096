@@ -1,4 +1,4 @@
-package Instrucciones;
+package Expresiones;
 
 import Abstracto.Instruccion;
 import Simbolo.*;

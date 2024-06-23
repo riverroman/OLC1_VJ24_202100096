@@ -15,17 +15,14 @@ public class Main {
     public static void main(String[] args) throws Exception {
         
         String entrada = """
-
-         var vector1 : string [] = [ "Hola", "Mundo" ];
-         var vector2 : int [] = [ 2, 5, 3, 1, 4 ];
-         const vector3 : double [] = [ (double)1, 2.0, 3.5, 4.5, 5.2 ];
-         const vector4:int [][] = [ [ 1, 2 ], [ 3, 4 ] ];                
-                                                                                  
-         println(vector1);         
-         println(vector2);         
-         println(vector3);         
-         println(vector4);         
-                                                                                 
+                              
+        var vector2D : int[][] = [ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ] ];
+        println(vector2D);
+        vector2D[ 1 ][ 2 ] = 10;
+        
+        println(vector2D[ 1 ][ 2 ]); // Esto debería imprimir 10
+        println(vector2D);
+                                                                            
         """;
         
         analizar(entrada); 
