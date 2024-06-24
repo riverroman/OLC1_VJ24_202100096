@@ -78,6 +78,7 @@ boleano = true|false
 "new"       { return new Symbol(sym.T_NEW, yycolumn, yyline, yytext()); }
 "."         { return new Symbol(sym.T_DOT, yycolumn, yyline, yytext()); }
 "append"    { return new Symbol(sym.T_APPEND, yycolumn, yyline, yytext()); }
+"remove"    { return new Symbol(sym.T_REMOVE, yycolumn, yyline, yytext()); }
 
 /*      Signos      */
 

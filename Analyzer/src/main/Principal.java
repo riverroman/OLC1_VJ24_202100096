@@ -363,7 +363,7 @@ public class Principal extends javax.swing.JFrame {
     
     private void generarReporteSimbolos(tablaSimbolos tabla) {
     StringBuilder html = new StringBuilder();
-    html.append("<html><head><title>Reporte de Tabla de Símbolos</title>");
+    html.append("<html><head><title>Reporte de Tabla de Simbolos</title>");
     html.append("<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">");
     html.append("<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>");
     html.append("<link href=\"https://fonts.googleapis.com/css2?family=Roboto&display=swap\" rel=\"stylesheet\">");

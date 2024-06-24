@@ -33,14 +33,14 @@ import Instrucciones.Append;
 import Instrucciones.DeclaracionVectores;
 import Instrucciones.DeclaracionVectores2;
 import Instrucciones.AsignacionCombinada;
+import Instrucciones.Remove;
 
 //Expresiones
 import Expresiones.Nativo;
 import Expresiones.AccesoVar;
 import Expresiones.Casteo;
 import Expresiones.Round;
-import Expresiones.AccesoListas;
-import Expresiones.AccesoVector;
+import Expresiones.AccesoCombinado;
 
 parser code 
 {:
@@ -75,7 +75,7 @@ terminal String T_INCREMENT, T_DECREMENT;
 terminal String T_IF, T_ELSE, T_BRACKETIZ, T_BRACKETDER;
 terminal String T_FOR;
 terminal String T_BREAK, T_CONTINUE, T_WHILE, T_DO, T_BRACEIZ, T_BRACEDER;
-terminal String T_ROUND, T_COMMA, T_VOID, T_LIST, T_NEW, T_DOT, T_APPEND;
+terminal String T_ROUND, T_COMMA, T_VOID, T_LIST, T_NEW, T_DOT, T_APPEND, T_REMOVE;
 terminal String UMENOS;
 
 /*      No Terminales       */
@@ -84,8 +84,8 @@ non terminal LinkedList<Instruccion> INICIO, LISTAINSTRUCCIONES;
 non terminal List<Instruccion> LISTA_VALORES;
 non terminal List<List<Instruccion>> LISTA_VALORES_2D;
 non terminal Instruccion INSTRUCCION, EXPRESION, IMPRIMIR, TIPOS, ARITMETICAS, RELACIONALES, LOGICOS, DECLARACION, ASIGNACION, CASTEO, INCREMENTO, DECREMENTO, IF, ELSE, FOR, BREAK, DECLARACIONFOR, CONTINUE, WHILE, DOWHILE, ROUND, METODO;
-non terminal Instruccion DECLARACION_LISTA, APPEND, ACCESO_LISTA, DECLARACION_VECTORES;
-non terminal Instruccion ASIGNACION_LISTAVECTORES, ACCESO_VECTOR;
+non terminal Instruccion DECLARACION_LISTA, APPEND, ACCESO_COMBINADO, DECLARACION_VECTORES;
+non terminal Instruccion ASIGNACION_LISTAVECTORES, ACCESO_VECTOR, REMOVE;
 non terminal MUTABILIDAD;
 non terminal Tipo TIPOSDECLARACION;
 
@@ -147,7 +147,7 @@ DECLARACION_VECTORES::= MUTABILIDAD:m T_ID:a T_COLON TIPOSDECLARACION:b T_BRACEI
 ;
 
 ASIGNACION_LISTAVECTORES::= T_ID:a T_BRACEIZ EXPRESION:b T_BRACEDER T_EQUAL EXPRESION:c T_SEMICOLON                                         {: RESULT = new AsignacionCombinada(a, b, c, aleft, aright); :}
-        |           T_ID:a T_BRACEIZ EXPRESION:b T_BRACEDER T_BRACEIZ EXPRESION:c T_BRACEDER T_EQUAL EXPRESION:d T_SEMICOLON        {: RESULT = new AsignacionCombinada(a, b, c, d, aleft, aright); :}
+        |           T_ID:a T_BRACEIZ EXPRESION:b T_BRACEDER T_BRACEIZ EXPRESION:c T_BRACEDER T_EQUAL EXPRESION:d T_SEMICOLON                {: RESULT = new AsignacionCombinada(a, b, c, d, aleft, aright); :}
 ;
 
 LISTA_VALORES::= LISTA_VALORES:a T_COMMA  EXPRESION:b   {: List<Instruccion> lista = (List<Instruccion>) a; lista.add((Instruccion) b); RESULT = lista; :}
@@ -221,13 +221,16 @@ EXPRESION ::= T_MINUS EXPRESION:a                   {: RESULT = new Aritmeticas(
        |      LOGICOS:a                             {: RESULT = a; :}
        |      CASTEO:a                              {: RESULT = a; :}
        |      ROUND:a                               {: RESULT = a; :}
-       |      ACCESO_VECTOR:a                       {: RESULT = a; :}
+       |      ACCESO_COMBINADO:a                    {: RESULT = a; :}
+       |      REMOVE:a                              {: RESULT = a; :}
 ;
 
-ACCESO_VECTOR::= T_ID:a T_BRACEIZ EXPRESION:b T_BRACEDER                                        {: RESULT = new AccesoVector(a,b, aleft, aright);   :}
-        |        T_ID:a T_BRACEIZ EXPRESION:b T_BRACEDER T_BRACEIZ EXPRESION:c T_BRACEDER       {: RESULT = new AccesoVector(a,b,c, aleft, aright); :}
+ACCESO_COMBINADO::= T_ID:a T_BRACEIZ EXPRESION:b T_BRACEDER                                        {: RESULT = new AccesoCombinado(a,b, aleft, aright);   :}
+        |           T_ID:a T_BRACEIZ EXPRESION:b T_BRACEDER T_BRACEIZ EXPRESION:c T_BRACEDER       {: RESULT = new AccesoCombinado(a,b,c, aleft, aright); :}
 ;
 
+REMOVE::= T_ID:a T_DOT T_REMOVE P_LEFT EXPRESION:b P_RIGHT          {: RESULT = new Remove(a,b,aleft,aright); :}
+;
 
 ARITMETICAS ::=  EXPRESION:a T_PLUS EXPRESION:b      {: RESULT = new Aritmeticas(a,b, Operadores.SUMA, aleft, aright); :}    
        |         EXPRESION:a T_MINUS EXPRESION:b     {: RESULT = new Aritmeticas(a,b, Operadores.RESTA, aleft, aright); :}

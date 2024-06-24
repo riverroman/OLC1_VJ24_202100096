@@ -29,7 +29,7 @@ public class sym {
   public static final int T_CONST = 35;
   public static final int T_CADENA = 4;
   public static final int T_PRINTLN = 2;
-  public static final int UMENOS = 57;
+  public static final int UMENOS = 58;
   public static final int T_DO = 47;
   public static final int T_DOT = 55;
   public static final int T_INCREMENT = 37;
@@ -56,6 +56,7 @@ public class sym {
   public static final int T_BREAK = 44;
   public static final int T_DIVIDE = 15;
   public static final int T_BOLEANO = 10;
+  public static final int T_REMOVE = 57;
   public static final int T_IF = 39;
   public static final int T_TIMES = 14;
   public static final int T_LESSTHANEQUAL = 21;
@@ -124,6 +125,7 @@ public class sym {
   "T_NEW",
   "T_DOT",
   "T_APPEND",
+  "T_REMOVE",
   "UMENOS"
   };
 }

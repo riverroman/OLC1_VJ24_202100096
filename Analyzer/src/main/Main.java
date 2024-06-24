@@ -15,14 +15,19 @@ public class Main {
     public static void main(String[] args) throws Exception {
         
         String entrada = """
-                              
-        var vector2D : int[][] = [ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ] ];
-        println(vector2D);
-        vector2D[ 1 ][ 2 ] = 10;
-        
-        println(vector2D[ 1 ][ 2 ]); // Esto debería imprimir 10
-        println(vector2D);
-                                                                            
+                         
+        println("---------------------------------------------");
+                         
+        List<int> miLista = new List();
+        miLista.append(1);
+        miLista.append(2);
+        println(miLista);
+        var miValor : int = miLista.remove(0);
+        println(miValor);
+        println(miLista);              
+                         
+        println("---------------------------------------------");
+                                                                         
         """;
         
         analizar(entrada); 

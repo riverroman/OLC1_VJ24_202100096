@@ -3,21 +3,22 @@ package Expresiones;
 import Abstracto.Instruccion;
 import Simbolo.*;
 import Excepciones.Errores;
+import java.util.List;
 
-public class AccesoVector extends Instruccion {
+public class AccesoCombinado extends Instruccion {
     private String id;
     private Instruccion index1;
     private Instruccion index2;
     private boolean esBidimensional;
     
-    public AccesoVector(String id, Instruccion index1, int linea, int columna) {
+    public AccesoCombinado(String id, Instruccion index1, int linea, int columna) {
         super(new Tipo(tipoDato.VOID), linea, columna);
         this.id = id;
         this.index1 = index1;
         this.esBidimensional = false;
     }
     
-    public AccesoVector(String id, Instruccion index1, Instruccion index2, int linea, int columna) {
+    public AccesoCombinado(String id, Instruccion index1, Instruccion index2, int linea, int columna) {
         super(null, linea, columna);
         this.id = id;
         this.index1 = index1;
@@ -32,9 +33,10 @@ public class AccesoVector extends Instruccion {
             return new Errores("SEMANTICO", "La variable: " + id + " no existe", this.linea, this.columna);
         }
         
-        if (esBidimensional) {
-            if (!(simbolo.getValor() instanceof Object[][])) {
-                return new Errores("SEMANTICO", "La variable: " + id + " no es un vector bidimensional", this.linea, this.columna);
+        if (simbolo.getValor() instanceof Object[][]) {
+            // Caso bidimensional
+            if (!esBidimensional) {
+                return new Errores("SEMANTICO", "La variable: " + id + " es un vector bidimensional, se requieren dos índices", this.linea, this.columna);
             }
             
             Object[][] vector = (Object[][]) simbolo.getValor();
@@ -52,18 +54,20 @@ public class AccesoVector extends Instruccion {
                 return new Errores("SEMANTICO", "Indice fuera de los limites del vector", this.linea, this.columna);
             }
             
-            this.tipo = simbolo.getTipo();  // Establece el tipo del valor
+            this.tipo = simbolo.getTipo();
             return vector[indice1][indice2];
-        } else {
-            if (!(simbolo.getValor() instanceof Object[])) {
-                return new Errores("SEMANTICO", "La variable: " + id + " no es un vector unidimensional", this.linea, this.columna);
+            
+        } else if (simbolo.getValor() instanceof Object[]) {
+            // Caso unidimensional
+            if (esBidimensional) {
+                return new Errores("SEMANTICO", "La variable: " + id + " no es un vector bidimensional", this.linea, this.columna);
             }
             
             Object[] vector = (Object[]) simbolo.getValor();
             Object indiceObject = index1.interpretar(arbol, tabla);
             
             if (!(indiceObject instanceof Integer)) {
-                return new Errores("SEMANTICO", "El indice debe ser entero", this.linea, this.columna);
+                return new Errores("SEMANTICO", "El Indice debe ser entero", this.linea, this.columna);
             }
             
             int indice = (Integer) indiceObject;
@@ -74,6 +78,31 @@ public class AccesoVector extends Instruccion {
             
             this.tipo = simbolo.getTipo();
             return vector[indice];
+            
+        } else if (simbolo.getValor() instanceof List) {
+            // Caso lista
+            if (esBidimensional) {
+                return new Errores("SEMANTICO", "La variable: " + id + " no es una lista", this.linea, this.columna);
+            }
+            
+            List<Object> lista = (List<Object>) simbolo.getValor();
+            
+            Object indiceObject = index1.interpretar(arbol, tabla);
+            if (!(indiceObject instanceof Integer)) {
+                return new Errores("SEMANTICO", "El indice debe ser entero", this.linea, this.columna);
+            }
+            
+            int indice = (Integer) indiceObject;
+            
+            if (indice < 0 || indice >= lista.size()) {
+                return new Errores("SEMANTICO", "Índice fuera de los limites de la lista", this.linea, this.columna);
+            }
+            
+            this.tipo = simbolo.getTipo();
+            return lista.get(indice);
+            
+        } else {
+            return new Errores("SEMANTICO", "La variable: " + id + " no es un vector ni una lista", this.linea, this.columna);
         }
     }
 }
