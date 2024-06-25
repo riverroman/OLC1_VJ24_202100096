@@ -34,6 +34,8 @@ import Instrucciones.DeclaracionVectores;
 import Instrucciones.DeclaracionVectores2;
 import Instrucciones.AsignacionCombinada;
 import Instrucciones.Remove;
+import Instrucciones.Execute;
+import Instrucciones.Llamada;
 
 //Expresiones
 import Expresiones.Nativo;
@@ -75,7 +77,7 @@ terminal String T_INCREMENT, T_DECREMENT;
 terminal String T_IF, T_ELSE, T_BRACKETIZ, T_BRACKETDER;
 terminal String T_FOR;
 terminal String T_BREAK, T_CONTINUE, T_WHILE, T_DO, T_BRACEIZ, T_BRACEDER;
-terminal String T_ROUND, T_COMMA, T_VOID, T_LIST, T_NEW, T_DOT, T_APPEND, T_REMOVE;
+terminal String T_ROUND, T_COMMA, T_VOID, T_LIST, T_NEW, T_DOT, T_APPEND, T_REMOVE, T_START_WITH;
 terminal String UMENOS;
 
 /*      No Terminales       */
@@ -88,6 +90,9 @@ non terminal Instruccion DECLARACION_LISTA, APPEND, ACCESO_COMBINADO, DECLARACIO
 non terminal Instruccion ASIGNACION_LISTAVECTORES, ACCESO_VECTOR, REMOVE;
 non terminal MUTABILIDAD;
 non terminal Tipo TIPOSDECLARACION;
+non terminal LinkedList<HashMap> PARAMS;
+non terminal LinkedList<Instruccion> PARAMSCALL;
+non terminal Instruccion START_WITH, LLAMADA;
 
 /*      Manejo de Precedencia   */
 
@@ -128,6 +133,8 @@ INSTRUCCION ::= IMPRIMIR:a                                            {: RESULT 
     |           INCREMENTO:a                                          {: RESULT = a; :}
     |           DECREMENTO:a                                          {: RESULT = a; :}
     |           METODO:a                                              {: RESULT = a; :}
+    |           START_WITH:a                                          {: RESULT = a; :}
+    |           LLAMADA:a                                             {: RESULT = a; :}
     |           error
     |           error T_SEMICOLON 
 ;
@@ -254,11 +261,11 @@ LOGICOS ::=      EXPRESION:a T_OR EXPRESION:b    {: RESULT = new Logicos(a,b, Op
        |         T_NOT EXPRESION:a               {: RESULT = new Logicos(a,   OperadoresLogicos.NOT, aleft, aright); :}
 ;
 
-TIPOS ::=  T_ENTERO:a     {: RESULT = new Nativo(Integer.parseInt(a), new Tipo(tipoDato.ENTERO), aleft, aright); :}
-    |  T_CADENA:a     {: RESULT = new Nativo(a, new Tipo(tipoDato.CADENA), aleft, aright); :}
-    |  T_DECIMAL:a    {: RESULT = new Nativo(new Double(a), new Tipo(tipoDato.DECIMAL), aleft, aright); :}
-    |  T_CARACTER:a   {: RESULT = new Nativo(a, new Tipo(tipoDato.CARACTER), aleft, aright); :}
-    |  T_BOLEANO:a    {: RESULT = new Nativo(Boolean.parseBoolean(a), new Tipo(tipoDato.BOOLEANO), aleft, aright); :}
+TIPOS ::=  T_ENTERO:a       {: RESULT = new Nativo(Integer.parseInt(a), new Tipo(tipoDato.ENTERO), aleft, aright); :}
+    |  T_CADENA:a           {: RESULT = new Nativo(a, new Tipo(tipoDato.CADENA), aleft, aright); :}
+    |  T_DECIMAL:a          {: RESULT = new Nativo(new Double(a), new Tipo(tipoDato.DECIMAL), aleft, aright); :}
+    |  T_CARACTER:a         {: RESULT = new Nativo(a, new Tipo(tipoDato.CARACTER), aleft, aright); :}
+    |  T_BOLEANO:a          {: RESULT = new Nativo(Boolean.parseBoolean(a), new Tipo(tipoDato.BOOLEANO), aleft, aright); :}
 ;
 
 CASTEO ::= P_LEFT TIPOSDECLARACION:a P_RIGHT EXPRESION:b  {: RESULT = new Casteo(b, a, aleft, aright); :}
@@ -269,5 +276,22 @@ CASTEO ::= P_LEFT TIPOSDECLARACION:a P_RIGHT EXPRESION:b  {: RESULT = new Casteo
 ROUND ::=  T_ROUND P_LEFT EXPRESION:a P_RIGHT              {: RESULT = new Round(a, aleft, aright); :}
 ;
 
-METODO ::= TIPOSDECLARACION:a T_ID:b P_LEFT  P_RIGHT T_BRACKETIZ LISTAINSTRUCCIONES:c T_BRACKETDER   {: RESULT = new Metodo(b,c,a, aleft, aright); :}
+METODO ::= TIPOSDECLARACION:a T_ID:b P_LEFT PARAMS:p P_RIGHT T_BRACKETIZ LISTAINSTRUCCIONES:c T_BRACKETDER  {:   RESULT =  new Metodo(b,p,c,a, aleft, aright); :}
+    |      TIPOSDECLARACION:a T_ID:b P_LEFT P_RIGHT T_BRACKETIZ LISTAINSTRUCCIONES:c T_BRACKETDER           {:   RESULT =  new Metodo(b, new LinkedList<HashMap>(), c, a, aleft, aright );   :}
+;
+
+PARAMS ::= PARAMS:a T_COMMA TIPOSDECLARACION:b T_ID:c    {: RESULT = a; var hm2 = new HashMap<String, Object>(); hm2.put("id",c); hm2.put("tipo",b); RESULT.add(hm2); :}
+        |  TIPOSDECLARACION:a T_ID:b                     {: RESULT = new LinkedList<HashMap>(); var hm = new HashMap<String, Object>();hm.put("id",b);hm.put("tipo", a);RESULT.add(hm);:}
+;
+
+PARAMSCALL::= PARAMSCALL:a T_COMMA EXPRESION:e           {: RESULT = a; RESULT.add(e); :}  
+        |     EXPRESION:a                                {: RESULT = new LinkedList<Instruccion>(); RESULT.add(a); :}
+;
+
+START_WITH::=  T_START_WITH T_ID:a P_LEFT PARAMSCALL:b P_RIGHT T_SEMICOLON     {: RESULT = new Execute(a,b,aleft,aright); :}
+        |      T_START_WITH T_ID:a P_LEFT P_RIGHT T_SEMICOLON                  {: RESULT = new Execute(a, new LinkedList<Instruccion>(), aleft, aright ); :}
+;
+
+LLAMADA::= T_ID:a P_LEFT PARAMSCALL:b P_RIGHT T_SEMICOLON               {: RESULT = new Llamada(a,b,aleft,aright); :}
+        |  T_ID:a P_LEFT P_RIGHT T_SEMICOLON                            {: RESULT = new Llamada(a, new LinkedList<Instruccion>(), aleft, aright); :} 
 ;

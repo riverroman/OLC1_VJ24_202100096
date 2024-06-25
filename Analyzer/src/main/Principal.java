@@ -4,6 +4,10 @@ import Abstracto.Instruccion;
 import Analyzers.Lexer;
 import Analyzers.Parser;
 import Excepciones.Errores;
+import Instrucciones.AsignacionVar;
+import Instrucciones.Declaracion;
+import Instrucciones.Execute;
+import Instrucciones.Metodo;
 import Simbolo.Arbol;
 import Simbolo.Simbolo;
 import Simbolo.tablaSimbolos;
@@ -233,11 +237,44 @@ public class Principal extends javax.swing.JFrame {
                 if(a == null){
                     continue;
                 }
-                var res = a.interpretar(ast, tablaGlobal);
-                if(res instanceof Errores){
-                   lista.add((Errores) res);
+                
+                if(a instanceof Metodo){
+                    ast.addFunciones(a);
                 }
             }
+            
+            for (var a : ast.getInstrucciones()){
+                if(a == null){
+                    continue;
+                }
+                
+                if(a instanceof Declaracion || a instanceof AsignacionVar ){
+                    var res = a.interpretar(ast, tabla);
+                    if(res instanceof Errores errores){
+                        lista.add(errores);
+                    }
+                }   
+            }
+            
+            //Aca empieza la funcion Execute
+            Execute e = null;
+            
+            for(var a : ast.getInstrucciones()){
+                if(a == null){
+                    continue;
+                }
+                
+                if(a instanceof Execute execute){
+                    e = execute;
+                    break;
+                }
+            }
+            
+            var resultadoExecute = e.interpretar(ast, tabla);
+            if(resultadoExecute instanceof Errores){
+                System.out.println("Ya no sale Compi");
+            }
+            
             TXTSALIDA.setText(ast.getConsola());
             listaErroresGlobal = lista;
             

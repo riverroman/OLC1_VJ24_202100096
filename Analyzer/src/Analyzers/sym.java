@@ -29,12 +29,13 @@ public class sym {
   public static final int T_CONST = 35;
   public static final int T_CADENA = 4;
   public static final int T_PRINTLN = 2;
-  public static final int UMENOS = 58;
+  public static final int UMENOS = 59;
   public static final int T_DO = 47;
   public static final int T_DOT = 55;
   public static final int T_INCREMENT = 37;
   public static final int EOF = 0;
   public static final int T_MINUS = 13;
+  public static final int T_START_WITH = 58;
   public static final int error = 1;
   public static final int T_NEW = 54;
   public static final int T_BRACEDER = 49;
@@ -126,6 +127,7 @@ public class sym {
   "T_DOT",
   "T_APPEND",
   "T_REMOVE",
+  "T_START_WITH",
   "UMENOS"
   };
 }

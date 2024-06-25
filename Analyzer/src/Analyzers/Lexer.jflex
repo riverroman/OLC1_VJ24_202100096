@@ -74,11 +74,12 @@ boleano = true|false
 
 /*  Palabras Reservadas Sentencias List   */
 
-"List"      { return new Symbol(sym.T_LIST, yycolumn, yyline, yytext()); }
-"new"       { return new Symbol(sym.T_NEW, yycolumn, yyline, yytext()); }
-"."         { return new Symbol(sym.T_DOT, yycolumn, yyline, yytext()); }
-"append"    { return new Symbol(sym.T_APPEND, yycolumn, yyline, yytext()); }
-"remove"    { return new Symbol(sym.T_REMOVE, yycolumn, yyline, yytext()); }
+"List"          { return new Symbol(sym.T_LIST, yycolumn, yyline, yytext()); }
+"new"           { return new Symbol(sym.T_NEW, yycolumn, yyline, yytext()); }
+"."             { return new Symbol(sym.T_DOT, yycolumn, yyline, yytext()); }
+"append"        { return new Symbol(sym.T_APPEND, yycolumn, yyline, yytext());  }
+"remove"        { return new Symbol(sym.T_REMOVE,  yycolumn, yyline, yytext());  }
+"START_WITH"    { return new Symbol(sym.T_START_WITH, yycolumn, yyline, yytext()); }
 
 /*      Signos      */
 

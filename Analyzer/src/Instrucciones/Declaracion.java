@@ -21,6 +21,18 @@ public class Declaracion extends Instruccion {
         this.mutabilidad = mutabilidad;
     }
     
+    public Declaracion(String identificador, Instruccion valor, Tipo tipo, int linea, int col) {
+        super(tipo, linea, col);
+        this.identificador = identificador;
+        this.valor = valor;
+    }
+    
+    public Declaracion(String identificador, Tipo tipo, int linea, int columna){
+        super(tipo, linea, columna);
+        this.identificador = identificador;
+        this.valor = null;
+    }
+    
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla) {
         // Comprobar si `valor` es null antes de intentar interpretarlo

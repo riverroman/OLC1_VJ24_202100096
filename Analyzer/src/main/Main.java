@@ -1,43 +1,15 @@
 package main;
 
-import Abstracto.Instruccion;
-import Analyzers.Lexer;
-import Analyzers.Parser;
-import Excepciones.Errores;
-import Simbolo.Arbol;
-import Simbolo.tablaSimbolos;
-import java.io.BufferedReader;
-import java.io.StringReader;
-import java.util.LinkedList;
-
 public class Main {
     
     public static void main(String[] args) throws Exception {
-        
-        String entrada = """
-                         
-        println("---------------------------------------------");
-                         
-        List<int> miLista = new List();
-        miLista.append(1);
-        miLista.append(2);
-        println(miLista);
-        var miValor : int = miLista.remove(0);
-        println(miValor);
-        println(miLista);              
-                         
-        println("---------------------------------------------");
-                                                                         
-        """;
-        
-        analizar(entrada); 
         
         //analizadores("src/Analyzers/", "Lexer.jflex", "Parser.cup");    
         
         /*Interfaz Grafica*/
         
-        //Principal p = new Principal();
-        //p.setVisible(true);
+        Principal p = new Principal();
+        p.setVisible(true);
         
     }
     
@@ -52,36 +24,4 @@ public class Main {
             System.out.println(e);
         }
     }
-    
-    public static void analizar(String entrada){
-        try {
-            Lexer lexer = new Lexer(new BufferedReader(new StringReader(entrada)));
-            Parser parser = new Parser(lexer);
-            var resultado = parser.parse();
-            var ast = new Arbol((LinkedList<Instruccion>) resultado.value);
-            var tabla = new tablaSimbolos();
-            tabla.setNombre("GLOBAL");
-            ast.setConsola("");
-            LinkedList<Errores> lista = new LinkedList<>();
-            lista.addAll(lexer.ListaErrores);
-            lista.addAll(parser.ListaErrores);
-            for(var a : ast.getInstrucciones()){
-                var res = a.interpretar(ast, tabla);
-                if(res instanceof Errores){
-                    Errores error = (Errores) res;
-                    System.out.println(error);
-                }    
-            }
-            for(Errores error : lista){
-                System.out.println(error);
-            }
-   
-            System.out.println(ast.getConsola());
-        } catch (Exception e) {
-            System.out.println("No se pudo analizar la entrada");
-            System.out.println(e);
-        }
-    }
-    
-    
 }
