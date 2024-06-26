@@ -1,4 +1,3 @@
-
 package Simbolo;
 
 public enum tipoDato {
@@ -7,5 +6,7 @@ public enum tipoDato {
         BOOLEANO,
         CARACTER,
         CADENA,
-        VOID
+        VOID,
+        LISTA,
+        VECTOR
 }

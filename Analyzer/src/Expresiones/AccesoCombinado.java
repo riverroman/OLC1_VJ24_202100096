@@ -34,73 +34,71 @@ public class AccesoCombinado extends Instruccion {
         }
         
         if (simbolo.getValor() instanceof Object[][]) {
-            // Caso bidimensional
-            if (!esBidimensional) {
-                return new Errores("SEMANTICO", "La variable: " + id + " es un vector bidimensional, se requieren dos índices", this.linea, this.columna);
-            }
-            
             Object[][] vector = (Object[][]) simbolo.getValor();
-            Object indiceObject1 = index1.interpretar(arbol, tabla);
-            Object indiceObject2 = index2.interpretar(arbol, tabla);
             
-            if (!(indiceObject1 instanceof Integer) || !(indiceObject2 instanceof Integer)) {
-                return new Errores("SEMANTICO", "Los indices deben ser enteros", this.linea, this.columna);
+            Object indiceObject1 = index1.interpretar(arbol, tabla);
+            if (!(indiceObject1 instanceof Integer)) {
+                return new Errores("SEMANTICO", "El indice debe ser entero", this.linea, this.columna);
             }
             
             int indice1 = (Integer) indiceObject1;
-            int indice2 = (Integer) indiceObject2;
-            
-            if (indice1 < 0 || indice1 >= vector.length || indice2 < 0 || indice2 >= vector[indice1].length) {
+            if (indice1 < 0 || indice1 >= vector.length) {
                 return new Errores("SEMANTICO", "Indice fuera de los limites del vector", this.linea, this.columna);
             }
-            
-            this.tipo = simbolo.getTipo();
-            return vector[indice1][indice2];
-            
+
+            if (esBidimensional) {
+                Object indiceObject2 = index2.interpretar(arbol, tabla);
+                if (!(indiceObject2 instanceof Integer)) {
+                    return new Errores("SEMANTICO", "El indice debe ser entero", this.linea, this.columna);
+                }
+
+                int indice2 = (Integer) indiceObject2;
+                if (indice2 < 0 || indice2 >= vector[indice1].length) {
+                    return new Errores("SEMANTICO", "Indice fuera de los limites del vector", this.linea, this.columna);
+                }
+                
+                this.tipo = simbolo.getTipo();
+                return vector[indice1][indice2];
+            } else {
+                this.tipo = new Tipo(tipoDato.VECTOR);
+                return vector[indice1];
+            }
         } else if (simbolo.getValor() instanceof Object[]) {
-            // Caso unidimensional
             if (esBidimensional) {
                 return new Errores("SEMANTICO", "La variable: " + id + " no es un vector bidimensional", this.linea, this.columna);
             }
             
             Object[] vector = (Object[]) simbolo.getValor();
             Object indiceObject = index1.interpretar(arbol, tabla);
-            
             if (!(indiceObject instanceof Integer)) {
                 return new Errores("SEMANTICO", "El Indice debe ser entero", this.linea, this.columna);
             }
             
             int indice = (Integer) indiceObject;
-            
             if (indice < 0 || indice >= vector.length) {
                 return new Errores("SEMANTICO", "Indice fuera de los limites del vector", this.linea, this.columna);
             }
             
             this.tipo = simbolo.getTipo();
             return vector[indice];
-            
         } else if (simbolo.getValor() instanceof List) {
-            // Caso lista
             if (esBidimensional) {
                 return new Errores("SEMANTICO", "La variable: " + id + " no es una lista", this.linea, this.columna);
             }
             
             List<Object> lista = (List<Object>) simbolo.getValor();
-            
             Object indiceObject = index1.interpretar(arbol, tabla);
             if (!(indiceObject instanceof Integer)) {
                 return new Errores("SEMANTICO", "El indice debe ser entero", this.linea, this.columna);
             }
             
             int indice = (Integer) indiceObject;
-            
             if (indice < 0 || indice >= lista.size()) {
                 return new Errores("SEMANTICO", "Índice fuera de los limites de la lista", this.linea, this.columna);
             }
             
             this.tipo = simbolo.getTipo();
             return lista.get(indice);
-            
         } else {
             return new Errores("SEMANTICO", "La variable: " + id + " no es un vector ni una lista", this.linea, this.columna);
         }

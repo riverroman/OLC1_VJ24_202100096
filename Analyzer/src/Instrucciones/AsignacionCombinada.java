@@ -19,7 +19,7 @@ public class AsignacionCombinada extends Instruccion {
         this.valor = valor;
         this.esBidimensional = false;
     }
-
+    
     public AsignacionCombinada(String id, Instruccion index1, Instruccion index2, Instruccion valor, int linea, int columna) {
         super(null, linea, columna);
         this.id = id;

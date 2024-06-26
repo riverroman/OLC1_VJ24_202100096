@@ -6,6 +6,8 @@ import Analyzers.Parser;
 import Excepciones.Errores;
 import Instrucciones.AsignacionVar;
 import Instrucciones.Declaracion;
+import Instrucciones.DeclaracionLista;
+import Instrucciones.DeclaracionVectores;
 import Instrucciones.Execute;
 import Instrucciones.Metodo;
 import Simbolo.Arbol;
@@ -220,19 +222,22 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_BTNCARGARARCHIVO1ActionPerformed
 
     private void BTNINTERPRETARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNINTERPRETARActionPerformed
-
-       try {
+         try {
             String texto = TXTENTRADA.getText();
             Lexer lexer = new Lexer(new BufferedReader(new StringReader(texto)));
             Parser parser = new Parser(lexer);
             var resultado = parser.parse();
             var ast = new Arbol((LinkedList<Instruccion>) resultado.value);
             var tabla = new tablaSimbolos();
+            tabla.setNombre("GLOBLA");
+            ast.setConsola("");
+            ast.setTablaGlobal(tabla);
             tablaGlobal = new tablaSimbolos();
             tablaGlobal.setNombre("GLOBAL");
             LinkedList<Errores> lista = new LinkedList<>();
             lista.addAll(lexer.ListaErrores);
             lista.addAll(parser.ListaErrores);
+            
             for (var a : ast.getInstrucciones()){
                 if(a == null){
                     continue;
@@ -248,7 +253,7 @@ public class Principal extends javax.swing.JFrame {
                     continue;
                 }
                 
-                if(a instanceof Declaracion || a instanceof AsignacionVar ){
+                if(a instanceof Declaracion || a instanceof AsignacionVar || a instanceof DeclaracionVectores || a instanceof DeclaracionLista){
                     var res = a.interpretar(ast, tabla);
                     if(res instanceof Errores errores){
                         lista.add(errores);
@@ -282,6 +287,7 @@ public class Principal extends javax.swing.JFrame {
             System.out.println("Error fatal en compilacion de entrada.");
             System.out.println(e);
         }
+       
     }//GEN-LAST:event_BTNINTERPRETARActionPerformed
 
     private void BTNREPORTEERRORESActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNREPORTEERRORESActionPerformed

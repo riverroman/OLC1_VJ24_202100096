@@ -43,6 +43,7 @@ import Expresiones.AccesoVar;
 import Expresiones.Casteo;
 import Expresiones.Round;
 import Expresiones.AccesoCombinado;
+import Expresiones.Length;
 
 parser code 
 {:
@@ -78,6 +79,7 @@ terminal String T_IF, T_ELSE, T_BRACKETIZ, T_BRACKETDER;
 terminal String T_FOR;
 terminal String T_BREAK, T_CONTINUE, T_WHILE, T_DO, T_BRACEIZ, T_BRACEDER;
 terminal String T_ROUND, T_COMMA, T_VOID, T_LIST, T_NEW, T_DOT, T_APPEND, T_REMOVE, T_START_WITH;
+terminal String T_LENGTH;
 terminal String UMENOS;
 
 /*      No Terminales       */
@@ -92,7 +94,7 @@ non terminal MUTABILIDAD;
 non terminal Tipo TIPOSDECLARACION;
 non terminal LinkedList<HashMap> PARAMS;
 non terminal LinkedList<Instruccion> PARAMSCALL;
-non terminal Instruccion START_WITH, LLAMADA;
+non terminal Instruccion START_WITH, LLAMADA, LENGTH;
 
 /*      Manejo de Precedencia   */
 
@@ -230,6 +232,7 @@ EXPRESION ::= T_MINUS EXPRESION:a                   {: RESULT = new Aritmeticas(
        |      ROUND:a                               {: RESULT = a; :}
        |      ACCESO_COMBINADO:a                    {: RESULT = a; :}
        |      REMOVE:a                              {: RESULT = a; :}
+       |      LENGTH:a                              {: RESULT = a; :}
 ;
 
 ACCESO_COMBINADO::= T_ID:a T_BRACEIZ EXPRESION:b T_BRACEDER                                        {: RESULT = new AccesoCombinado(a,b, aleft, aright);   :}
@@ -294,4 +297,7 @@ START_WITH::=  T_START_WITH T_ID:a P_LEFT PARAMSCALL:b P_RIGHT T_SEMICOLON     {
 
 LLAMADA::= T_ID:a P_LEFT PARAMSCALL:b P_RIGHT T_SEMICOLON               {: RESULT = new Llamada(a,b,aleft,aright); :}
         |  T_ID:a P_LEFT P_RIGHT T_SEMICOLON                            {: RESULT = new Llamada(a, new LinkedList<Instruccion>(), aleft, aright); :} 
+;
+
+LENGTH::= T_LENGTH P_LEFT EXPRESION:a P_RIGHT                           {: RESULT = new Length(a, aleft, aright); :}
 ;

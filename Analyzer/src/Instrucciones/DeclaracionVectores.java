@@ -12,7 +12,7 @@ public class DeclaracionVectores extends Instruccion {
     private boolean mutabilidad;
     
     public DeclaracionVectores(String id, Tipo tipo, List<Instruccion> valores, boolean mutabilidad, int linea, int columna) {
-        super(new Tipo(tipoDato.VOID), linea, columna);
+        super(new Tipo(tipoDato.VECTOR), linea, columna);
         this.id = id;
         this.tipo = tipo;
         this.valores = valores;
