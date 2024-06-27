@@ -8,6 +8,7 @@ import Instrucciones.AsignacionVar;
 import Instrucciones.Declaracion;
 import Instrucciones.DeclaracionLista;
 import Instrucciones.DeclaracionVectores;
+import Instrucciones.DeclaracionVectores2;
 import Instrucciones.Execute;
 import Instrucciones.Metodo;
 import Simbolo.Arbol;
@@ -253,7 +254,8 @@ public class Principal extends javax.swing.JFrame {
                     continue;
                 }
                 
-                if(a instanceof Declaracion || a instanceof AsignacionVar || a instanceof DeclaracionVectores || a instanceof DeclaracionLista){
+                if(a instanceof Declaracion || a instanceof AsignacionVar || a instanceof DeclaracionVectores || a instanceof DeclaracionLista
+                            || a instanceof DeclaracionVectores2){
                     var res = a.interpretar(ast, tabla);
                     if(res instanceof Errores errores){
                         lista.add(errores);
