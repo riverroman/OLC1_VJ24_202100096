@@ -36,6 +36,7 @@ import Instrucciones.AsignacionCombinada;
 import Instrucciones.Remove;
 import Instrucciones.Execute;
 import Instrucciones.Llamada;
+import Instrucciones.Return;
 
 //Expresiones
 import Expresiones.Nativo;
@@ -79,7 +80,7 @@ terminal String T_IF, T_ELSE, T_BRACKETIZ, T_BRACKETDER;
 terminal String T_FOR;
 terminal String T_BREAK, T_CONTINUE, T_WHILE, T_DO, T_BRACEIZ, T_BRACEDER;
 terminal String T_ROUND, T_COMMA, T_VOID, T_LIST, T_NEW, T_DOT, T_APPEND, T_REMOVE, T_START_WITH;
-terminal String T_LENGTH;
+terminal String T_LENGTH, T_RETURN;
 terminal String UMENOS;
 
 /*      No Terminales       */
@@ -89,12 +90,13 @@ non terminal List<Instruccion> LISTA_VALORES;
 non terminal List<List<Instruccion>> LISTA_VALORES_2D;
 non terminal Instruccion INSTRUCCION, EXPRESION, IMPRIMIR, TIPOS, ARITMETICAS, RELACIONALES, LOGICOS, DECLARACION, ASIGNACION, CASTEO, INCREMENTO, DECREMENTO, IF, ELSE, FOR, BREAK, DECLARACIONFOR, CONTINUE, WHILE, DOWHILE, ROUND, METODO;
 non terminal Instruccion DECLARACION_LISTA, APPEND, ACCESO_COMBINADO, DECLARACION_VECTORES;
-non terminal Instruccion ASIGNACION_LISTAVECTORES, ACCESO_VECTOR, REMOVE;
+non terminal Instruccion ASIGNACION_LISTAVECTORES, REMOVE;
 non terminal MUTABILIDAD;
 non terminal Tipo TIPOSDECLARACION;
 non terminal LinkedList<HashMap> PARAMS;
 non terminal LinkedList<Instruccion> PARAMSCALL;
 non terminal Instruccion START_WITH, LLAMADA, LENGTH;
+non terminal Instruccion RETURN;
 
 /*      Manejo de Precedencia   */
 
@@ -132,6 +134,7 @@ INSTRUCCION ::= IMPRIMIR:a                                            {: RESULT 
     |           DOWHILE:a                                             {: RESULT = a; :}
     |           BREAK:a                                               {: RESULT = a; :}
     |           CONTINUE:a                                            {: RESULT = a; :}
+    |           RETURN:a                                              {: RESULT = a; :}
     |           INCREMENTO:a                                          {: RESULT = a; :}
     |           DECREMENTO:a                                          {: RESULT = a; :}
     |           METODO:a                                              {: RESULT = a; :}
@@ -196,9 +199,9 @@ DECREMENTO ::= T_ID:a T_DECREMENT T_SEMICOLON              {: RESULT = new Decre
 IF::= T_IF P_LEFT EXPRESION:a P_RIGHT T_BRACKETIZ LISTAINSTRUCCIONES:b T_BRACKETDER ELSE:c  {: RESULT = new If(a,b,c, aleft, aright); :}
 ;
 
-ELSE::= T_ELSE IF:a                                           {: RESULT = a; :} 
-    | T_ELSE T_BRACKETIZ LISTAINSTRUCCIONES:a T_BRACKETDER    {: RESULT = new Else(a,aleft,aright); :}
-    |                                                         {: RESULT = null; :}    
+ELSE::= T_ELSE IF:a                                             {: RESULT = a; :} 
+    |   T_ELSE T_BRACKETIZ LISTAINSTRUCCIONES:a T_BRACKETDER    {: RESULT = new Else(a,aleft,aright); :}
+    |                                                           {: RESULT = null; :}    
 ;
 
 FOR::= T_FOR P_LEFT ASIGNACION:a EXPRESION:b T_SEMICOLON DECLARACIONFOR:c P_RIGHT T_BRACKETIZ LISTAINSTRUCCIONES:d T_BRACKETDER  {: RESULT = new For(a,b,c,d, aleft, aright); :}
@@ -233,6 +236,7 @@ EXPRESION ::= T_MINUS EXPRESION:a                   {: RESULT = new Aritmeticas(
        |      ACCESO_COMBINADO:a                    {: RESULT = a; :}
        |      REMOVE:a                              {: RESULT = a; :}
        |      LENGTH:a                              {: RESULT = a; :}
+       |      LLAMADA:a                             {: RESULT = a; :}
 ;
 
 ACCESO_COMBINADO::= T_ID:a T_BRACEIZ EXPRESION:b T_BRACEDER                                        {: RESULT = new AccesoCombinado(a,b, aleft, aright);   :}
@@ -295,9 +299,13 @@ START_WITH::=  T_START_WITH T_ID:a P_LEFT PARAMSCALL:b P_RIGHT T_SEMICOLON     {
         |      T_START_WITH T_ID:a P_LEFT P_RIGHT T_SEMICOLON                  {: RESULT = new Execute(a, new LinkedList<Instruccion>(), aleft, aright ); :}
 ;
 
-LLAMADA::= T_ID:a P_LEFT PARAMSCALL:b P_RIGHT T_SEMICOLON               {: RESULT = new Llamada(a,b,aleft,aright); :}
-        |  T_ID:a P_LEFT P_RIGHT T_SEMICOLON                            {: RESULT = new Llamada(a, new LinkedList<Instruccion>(), aleft, aright); :} 
+LLAMADA::= T_ID:a P_LEFT PARAMSCALL:b P_RIGHT                   {: RESULT = new Llamada(a,b,aleft,aright); :}
+        |  T_ID:a P_LEFT P_RIGHT                                {: RESULT = new Llamada(a, new LinkedList<Instruccion>(), aleft, aright); :} 
 ;
 
 LENGTH::= T_LENGTH P_LEFT EXPRESION:a P_RIGHT                           {: RESULT = new Length(a, aleft, aright); :}
+;
+
+RETURN::= T_RETURN T_SEMICOLON              {: RESULT = new Return( null,0,0);       :}
+    | T_RETURN EXPRESION:a T_SEMICOLON      {: RESULT = new Return( a,aleft,aright); :}
 ;

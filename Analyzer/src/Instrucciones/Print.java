@@ -2,25 +2,32 @@ package Instrucciones;
 
 import Abstracto.Instruccion;
 import Excepciones.Errores;
-import Simbolo.*;
+import Simbolo.Arbol;
+import Simbolo.Tipo;
+import Simbolo.tablaSimbolos;
+import Simbolo.tipoDato;
 
 public class Print extends Instruccion {
-    
     private Instruccion expresion;
-    
+
     public Print(Instruccion expresion, int linea, int columna) {
-        super(new Tipo(tipoDato.VOID), linea, columna);
+        super(null, linea, columna);
         this.expresion = expresion;
     }
-    
+
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla) {
         var resultado = this.expresion.interpretar(arbol, tabla);
-        
+
         if (resultado instanceof Errores) {
             return resultado;
         }
-        
+
+        if (resultado == null) {
+            arbol.Print("null");
+            return null;
+        }
+
         if (resultado instanceof Object[]) {
             Object[] vector = (Object[]) resultado;
             StringBuilder sb = new StringBuilder();

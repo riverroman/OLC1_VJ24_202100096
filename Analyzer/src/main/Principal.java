@@ -4,12 +4,15 @@ import Abstracto.Instruccion;
 import Analyzers.Lexer;
 import Analyzers.Parser;
 import Excepciones.Errores;
+import Expresiones.AccesoCombinado;
+import Instrucciones.AsignacionCombinada;
 import Instrucciones.AsignacionVar;
 import Instrucciones.Declaracion;
 import Instrucciones.DeclaracionLista;
 import Instrucciones.DeclaracionVectores;
 import Instrucciones.DeclaracionVectores2;
 import Instrucciones.Execute;
+import Instrucciones.Llamada;
 import Instrucciones.Metodo;
 import Simbolo.Arbol;
 import Simbolo.Simbolo;
@@ -229,16 +232,19 @@ public class Principal extends javax.swing.JFrame {
             Parser parser = new Parser(lexer);
             var resultado = parser.parse();
             var ast = new Arbol((LinkedList<Instruccion>) resultado.value);
+            
             var tabla = new tablaSimbolos();
             tabla.setNombre("GLOBLA");
             ast.setConsola("");
             ast.setTablaGlobal(tabla);
             tablaGlobal = new tablaSimbolos();
             tablaGlobal.setNombre("GLOBAL");
+            //ast.getTablaGlobal(tablaGlobal);
             LinkedList<Errores> lista = new LinkedList<>();
             lista.addAll(lexer.ListaErrores);
             lista.addAll(parser.ListaErrores);
-            
+            System.out.println(lista);
+             
             for (var a : ast.getInstrucciones()){
                 if(a == null){
                     continue;
@@ -247,6 +253,7 @@ public class Principal extends javax.swing.JFrame {
                 if(a instanceof Metodo){
                     ast.addFunciones(a);
                 }
+                
             }
             
             for (var a : ast.getInstrucciones()){
@@ -255,7 +262,7 @@ public class Principal extends javax.swing.JFrame {
                 }
                 
                 if(a instanceof Declaracion || a instanceof AsignacionVar || a instanceof DeclaracionVectores || a instanceof DeclaracionLista
-                            || a instanceof DeclaracionVectores2){
+                            || a instanceof DeclaracionVectores2 || a instanceof AsignacionCombinada || a instanceof AccesoCombinado){
                     var res = a.interpretar(ast, tabla);
                     if(res instanceof Errores errores){
                         lista.add(errores);
@@ -277,19 +284,24 @@ public class Principal extends javax.swing.JFrame {
                 }
             }
             
-            var resultadoExecute = e.interpretar(ast, tabla);
-            if(resultadoExecute instanceof Errores){
-                System.out.println("Ya no sale Compi");
-            }
+            if (e != null) {
+                var resultadoExecute = e.interpretar(ast, tabla);
+                if(resultadoExecute instanceof Errores){
+                    System.out.println("Error en ejecucion");
+                    System.out.println(resultadoExecute);
+                }
+            } else {
+                System.out.println("No se encontro la función 'main'");
+            }  
             
             TXTSALIDA.setText(ast.getConsola());
             listaErroresGlobal = lista;
+             System.out.println(listaErroresGlobal);
             
         } catch (Exception e) {
             System.out.println("Error fatal en compilacion de entrada.");
             System.out.println(e);
         }
-       
     }//GEN-LAST:event_BTNINTERPRETARActionPerformed
 
     private void BTNREPORTEERRORESActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNREPORTEERRORESActionPerformed

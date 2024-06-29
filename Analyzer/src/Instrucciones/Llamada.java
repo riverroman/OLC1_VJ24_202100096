@@ -12,7 +12,7 @@ public class Llamada extends Instruccion {
     private LinkedList<Instruccion> parametros;
     
     public Llamada(String id, LinkedList<Instruccion> parametros, int linea, int columna){
-        super(new Tipo(tipoDato.VOID), linea, columna);
+        super(null, linea, columna);
         this.id = id;
         this.parametros = parametros;
     }

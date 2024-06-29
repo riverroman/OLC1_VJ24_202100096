@@ -58,7 +58,7 @@ public class For extends Instruccion {
                 if (instruccion instanceof Continue) {
                     break;
                 }
-                
+               
                 Object resIns = instruccion.interpretar(arbol, newTabla2);
                 
                 // Manejo de transferencia Break
@@ -68,6 +68,11 @@ public class For extends Instruccion {
                 // Manejo de transferencia Continue
                 if (resIns instanceof Continue) {
                     break;
+                }
+                
+                // Manejo de transferencia Return
+                if(resIns instanceof  Return){
+                    return  resIns;
                 }
                 
                 if (resIns instanceof Errores) {

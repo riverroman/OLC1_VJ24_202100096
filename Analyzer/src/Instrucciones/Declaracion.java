@@ -20,19 +20,19 @@ public class Declaracion extends Instruccion {
         this.valor = valor;
         this.mutabilidad = mutabilidad;
     }
-    
+
     public Declaracion(String identificador, Instruccion valor, Tipo tipo, int linea, int col) {
         super(tipo, linea, col);
         this.identificador = identificador;
         this.valor = valor;
     }
-    
+
     public Declaracion(String identificador, Tipo tipo, int linea, int columna){
         super(tipo, linea, columna);
         this.identificador = identificador;
         this.valor = null;
     }
-    
+
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla) {
         // Comprobar si `valor` es null antes de intentar interpretarlo
@@ -41,14 +41,14 @@ public class Declaracion extends Instruccion {
         if (valorInterpretado instanceof Errores) {
             return valorInterpretado;
         }
-        
-        //Validar el tipo
-        if (this.valor != null && this.valor.tipo.getTipo() != this.tipo.getTipo()) {
+
+        // Validar el tipo
+        if (this.valor != null && this.valor.tipo != null && this.valor.tipo.getTipo() != this.tipo.getTipo()) {
             return new Errores("SEMANTICO", "Tipos erroneos", this.linea, this.columna);
         }
-        
-        Simbolo s = new Simbolo(this.tipo, this.identificador, valorInterpretado, this.mutabilidad);
 
+        Simbolo s = new Simbolo(this.tipo, this.identificador, valorInterpretado, this.mutabilidad);
+        
         boolean creacion = tabla.setVariable(s);
         if (!creacion) {
             return new Errores("SEMANTICO", "Variable ya existente: " + identificador, this.linea, this.columna);

@@ -65,6 +65,7 @@ boleano = true|false
 
 "break"     { return new Symbol(sym.T_BREAK, yycolumn, yyline, yytext());    }
 "continue"  { return new Symbol(sym.T_CONTINUE, yycolumn, yyline, yytext()); }
+"return"    { return new Symbol(sym.T_RETURN, yycolumn, yyline, yytext());   }
 "while"     { return new Symbol(sym.T_WHILE, yycolumn, yyline, yytext());    }
 "do"        { return new Symbol(sym.T_DO, yycolumn, yyline, yytext());       }
 

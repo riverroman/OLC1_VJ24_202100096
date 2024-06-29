@@ -24,12 +24,13 @@ public class sym {
   public static final int T_CARACTER = 6;
   public static final int T_FOR = 43;
   public static final int T_LESSTHAN = 20;
+  public static final int T_RETURN = 60;
   public static final int T_NOT = 28;
   public static final int T_AND = 26;
   public static final int T_CONST = 35;
   public static final int T_CADENA = 4;
   public static final int T_PRINTLN = 2;
-  public static final int UMENOS = 60;
+  public static final int UMENOS = 61;
   public static final int T_DO = 47;
   public static final int T_DOT = 55;
   public static final int T_INCREMENT = 37;
@@ -130,6 +131,7 @@ public class sym {
   "T_REMOVE",
   "T_START_WITH",
   "T_LENGTH",
+  "T_RETURN",
   "UMENOS"
   };
 }

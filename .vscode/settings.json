@@ -1,0 +1,11 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "C:/Users/river/Documents/JFlex y Cup/java-cup-11b-runtime.jar",
+        "C:/Users/river/Documents/JFlex y Cup/java-cup-11b.jar",
+        "C:/Users/river/Documents/JFlex y Cup/jflex-1.9.1.jar",
+        "Librerias/java-cup-11b.jar",
+        "Librerias/java-cup-11b-runtime.jar",
+        "Librerias/jflex-full-1.9.1.jar"
+    ]
+}
