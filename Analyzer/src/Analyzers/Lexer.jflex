@@ -71,8 +71,9 @@ boleano = true|false
 
 /*  Palabras Reservadas para Funciones Nativas      */
 
-"round"     { return new Symbol(sym.T_ROUND, yycolumn, yyline, yytext());  }
-"length"    { return new Symbol(sym.T_LENGTH, yycolumn, yyline, yytext()); }
+"round"     { return new Symbol(sym.T_ROUND, yycolumn, yyline, yytext());    }
+"length"    { return new Symbol(sym.T_LENGTH, yycolumn, yyline, yytext());   }
+"toString"  { return new Symbol(sym.T_TOSTRING, yycolumn, yyline, yytext()); }
 
 /*  Palabras Reservadas Sentencias List   */
 

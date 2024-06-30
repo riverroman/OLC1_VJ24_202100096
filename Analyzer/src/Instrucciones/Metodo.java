@@ -30,8 +30,6 @@ public class Metodo extends Instruccion{
                 return resultado;
             }
             
-            System.out.println(resultado);
-            
             // Instancia el return
             if(resultado instanceof Expresiones.Nativo){
                 return resultado;

@@ -53,8 +53,7 @@ public class If extends Instruccion {
                 }
             } else if (this.instruccionElse != null) {
                 var resultado = this.instruccionElse.interpretar(arbol, newTabla);
-                //System.out.println(resultado);
-
+               
                 if (resultado instanceof Errores) {
                     arbol.getErrores().add((Errores) resultado);
                 }

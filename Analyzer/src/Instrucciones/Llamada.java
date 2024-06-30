@@ -67,14 +67,10 @@ public class Llamada extends Instruccion {
             
             var resultadoFuncion = metodo.interpretar(arbol, newTabla);
             
-            //System.out.println(resultadoFuncion);
-            
             if(resultadoFuncion instanceof  Errores){
                 return resultadoFuncion;
             }
             
-            //Aca return
-
             if(resultadoFuncion instanceof Expresiones.Nativo){
                 return ((Nativo) resultadoFuncion).valor;
             }
