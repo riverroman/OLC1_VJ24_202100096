@@ -2,6 +2,7 @@ package Instrucciones;
 
 import Abstracto.Instruccion;
 import Excepciones.Errores;
+import Expresiones.Nativo;
 import java.util.LinkedList;
 import Simbolo.*;
 
@@ -19,54 +20,51 @@ public class If extends Instruccion {
     
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla) {
-        var condicional = this.condicion.interpretar(arbol, tabla);
+            var condicional = this.condicion.interpretar(arbol, tabla);
 
-        if (condicional instanceof Errores) {
-            return condicional;
-        }
+            if (condicional instanceof Errores) {
+                return condicional;
+            }
 
-        // Verificar que la expresión o condicional a evaluar sea un tipo Booleano
-        if (this.condicion.tipo.getTipo() != tipoDato.BOOLEANO) {
-            return new Errores("SEMANTICO", "La expresión a evaluar no es de tipo Booleano", this.linea, this.columna);
-        }
+            if (this.condicion.tipo.getTipo() != tipoDato.BOOLEANO) {
+                return new Errores("SEMANTICO", "La expresión a evaluar no es de tipo Booleano", this.linea, this.columna);
+            }
 
-        var newTabla = new tablaSimbolos(tabla);
-        if ((boolean) condicional) {
-            for (var instruccion : this.instruccionesIf) {
-                
-                // Manejo de Transferencia Break
-                if(instruccion instanceof Break){
-                    return instruccion;
+            var newTabla = new tablaSimbolos(tabla);
+            if ((boolean) condicional) {
+                for (var instruccion : this.instruccionesIf) {
+                    if(instruccion instanceof Break || instruccion instanceof Continue){
+                        return instruccion;
+                    }
+                    
+                    var resultado = instruccion.interpretar(arbol, newTabla);
+
+                    if(resultado instanceof Break || resultado instanceof Continue){
+                        return resultado;
+                    }
+
+                    if (resultado instanceof Errores) {
+                        arbol.getErrores().add((Errores) resultado);
+                    }
+
+                    if (resultado instanceof Expresiones.Nativo) {
+                        return resultado;
+                    }
                 }
-                
-                if(instruccion instanceof Continue){
-                    return  instruccion;
-                }
-                
-                var resultado = instruccion.interpretar(arbol, newTabla);
-                
-                if(resultado instanceof Break){
-                    return resultado;
-                }
-                
-                if(resultado instanceof Continue){
-                    return resultado;
-                }
-                
-                /* Manejo de Errores */
+            } else if (this.instruccionElse != null) {
+                var resultado = this.instruccionElse.interpretar(arbol, newTabla);
+                //System.out.println(resultado);
+
                 if (resultado instanceof Errores) {
                     arbol.getErrores().add((Errores) resultado);
                 }
-               
-            }
-        } else if (this.instruccionElse != null) {
-            var resultado = this.instruccionElse.interpretar(arbol, newTabla);
 
-            /* Manejo de Errores */
-            if (resultado instanceof Errores) {
-                arbol.getErrores().add((Errores) resultado);
+                if (resultado instanceof Expresiones.Nativo) {
+                        return resultado;
+                }
             }
+            
+            return null;
         }
-        return null;
-    }
+
 }

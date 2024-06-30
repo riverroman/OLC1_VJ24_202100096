@@ -46,6 +46,10 @@ public class DoWhile extends Instruccion {
                     break;
                 }
                 
+                if(resultado instanceof Expresiones.Nativo){
+                    return resultado;
+                }
+                
             }
             
             condicional = this.condicion.interpretar(arbol, tabla);

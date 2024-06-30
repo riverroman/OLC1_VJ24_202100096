@@ -8,5 +8,7 @@ public enum tipoDato {
         CADENA,
         VOID,
         LISTA,
-        VECTOR
+        VECTOR,
+        RETURN,
+        LLAMADA,
 }

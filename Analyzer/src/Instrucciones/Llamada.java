@@ -2,6 +2,7 @@ package Instrucciones;
 
 import Abstracto.Instruccion;
 import Excepciones.Errores;
+import Expresiones.Nativo;
 import java.util.LinkedList;
 import Simbolo.*;
 
@@ -60,15 +61,24 @@ public class Llamada extends Instruccion {
                     return  new Errores("SEMANTICO", "Error en tipo parametro", this.linea, this.columna);
                 }
                 
-                
                 variable.setValor(valorInterpretado);
                 
             }
             
             var resultadoFuncion = metodo.interpretar(arbol, newTabla);
+            
+            //System.out.println(resultadoFuncion);
+            
             if(resultadoFuncion instanceof  Errores){
                 return resultadoFuncion;
             }
+            
+            //Aca return
+
+            if(resultadoFuncion instanceof Expresiones.Nativo){
+                return ((Nativo) resultadoFuncion).valor;
+            }
+            
         }
             return  null;
     }

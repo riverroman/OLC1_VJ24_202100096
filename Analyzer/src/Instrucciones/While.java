@@ -45,6 +45,11 @@ public class While extends Instruccion {
                 if (resultado instanceof Continue) {
                     break;
                 }
+                
+                if (resultado instanceof Expresiones.Nativo){
+                    return resultado;
+                }
+                
             }
             
             // Evaluar la condicion nuevamente *Importante

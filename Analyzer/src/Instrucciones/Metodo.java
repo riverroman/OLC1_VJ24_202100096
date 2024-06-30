@@ -25,9 +25,18 @@ public class Metodo extends Instruccion{
     public Object interpretar(Arbol arbol, tablaSimbolos tabla){
         for(var i : this.instrucciones){
             var resultado = i.interpretar(arbol, tabla);
+            
             if(resultado instanceof Errores){
                 return resultado;
             }
+            
+            System.out.println(resultado);
+            
+            // Instancia el return
+            if(resultado instanceof Expresiones.Nativo){
+                return resultado;
+            }
+            
         }
         return  null;
     }

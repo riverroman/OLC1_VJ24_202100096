@@ -3,9 +3,7 @@ package Instrucciones;
 import Abstracto.Instruccion;
 import Excepciones.Errores;
 import Simbolo.Arbol;
-import Simbolo.Tipo;
 import Simbolo.tablaSimbolos;
-import Simbolo.tipoDato;
 
 public class Print extends Instruccion {
     private Instruccion expresion;

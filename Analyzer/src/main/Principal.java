@@ -300,7 +300,16 @@ public class Principal extends javax.swing.JFrame {
             
         } catch (Exception e) {
             System.out.println("Error fatal en compilacion de entrada.");
-            System.out.println(e);
+            
+            e.printStackTrace();
+            // Imprimir información específica sobre la línea exacta del error
+            StackTraceElement[] stackTrace = e.getStackTrace();
+            if (stackTrace.length > 0) {
+                StackTraceElement element = stackTrace[0];
+                System.out.println("Error en la clase: " + element.getClassName());
+                System.out.println("Error en el método: " + element.getMethodName());
+                System.out.println("Error en la línea: " + element.getLineNumber());
+                } 
         }
     }//GEN-LAST:event_BTNINTERPRETARActionPerformed
 

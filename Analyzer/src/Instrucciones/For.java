@@ -50,6 +50,7 @@ public class For extends Instruccion {
             
             for (Instruccion instruccion : this.instrucciones) {
                 
+                
                 // Manejo de transferencia Break
                 if (instruccion instanceof Break) {
                     return null;
@@ -57,6 +58,11 @@ public class For extends Instruccion {
                 // Manejo de transferencia Continue
                 if (instruccion instanceof Continue) {
                     break;
+                }
+                
+                // Return
+                if(instruccion instanceof Expresiones.Nativo){
+                    return instruccion;
                 }
                
                 Object resIns = instruccion.interpretar(arbol, newTabla2);
@@ -71,7 +77,7 @@ public class For extends Instruccion {
                 }
                 
                 // Manejo de transferencia Return
-                if(resIns instanceof  Return){
+                if(resIns instanceof  Expresiones.Nativo){
                     return  resIns;
                 }
                 

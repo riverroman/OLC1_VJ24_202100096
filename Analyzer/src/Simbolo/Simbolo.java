@@ -33,7 +33,7 @@ public class Simbolo {
     public Object getValor() {
         return valor;
     }
-
+    
     public boolean isMutable() {
         return mutabilidad;
     }
