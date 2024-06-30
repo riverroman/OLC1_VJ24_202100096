@@ -75,6 +75,13 @@ utilizando las herramientas de JFLEX y CUP.
 </p>
 
 ---
+>### **Reporte AST**
+
+<p align="center">
+    <img src="./img/arbolAST.png">
+</p>
+
+---
 >### **RESET**
 * Se limpia las 2 áreas de texto para poder cargar un siguiente archivo y asi sucesivamente su funcion principal es la de no dejar que se enciclen los reportes.
 ---
