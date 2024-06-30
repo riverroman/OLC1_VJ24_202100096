@@ -1,6 +1,7 @@
 package Expresiones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Excepciones.Errores;
 import Simbolo.*;
 import java.util.List;
@@ -14,6 +15,16 @@ public class Length extends Instruccion {
         this.valor = valor;
     }
     
+    @Override
+    public NodoAst astNodo() {
+        NodoAst nodoLength = new NodoAst("Length");
+        nodoLength.agregarHijo("length");
+        nodoLength.agregarHijo("(");
+        nodoLength.agregarHijoAST(valor.astNodo());
+        nodoLength.agregarHijo(")");
+        return nodoLength;
+    }
+
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla) {
         Object valorInterpretado = valor.interpretar(arbol, tabla);

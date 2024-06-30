@@ -1,6 +1,7 @@
 package Expresiones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Excepciones.Errores;
 import Simbolo.*;
 import java.util.List;
@@ -14,6 +15,18 @@ public class Find extends Instruccion {
         super(new Tipo(tipoDato.BOOLEANO), linea, columna);
         this.id = id;
         this.expresion = expresion;
+    }
+    
+    @Override
+    public NodoAst astNodo() {
+        NodoAst nodoFind = new NodoAst("Find");
+        nodoFind.agregarHijo(id);
+        nodoFind.agregarHijo(".");
+        nodoFind.agregarHijo("find");
+        nodoFind.agregarHijo("(");
+        nodoFind.agregarHijoAST(expresion.astNodo());
+        nodoFind.agregarHijo(")");
+        return nodoFind;
     }
     
     @Override

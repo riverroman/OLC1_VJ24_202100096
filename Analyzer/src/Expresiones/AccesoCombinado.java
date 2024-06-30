@@ -1,6 +1,7 @@
 package Expresiones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Simbolo.*;
 import Excepciones.Errores;
 import java.util.List;
@@ -24,6 +25,21 @@ public class AccesoCombinado extends Instruccion {
         this.index1 = index1;
         this.index2 = index2;
         this.esBidimensional = true;
+    }
+    
+     @Override
+    public NodoAst astNodo() {
+        NodoAst nodo = new NodoAst("Acceso Combinado");
+        nodo.agregarHijo("ID: " + id);
+        nodo.agregarHijo("[");
+        nodo.agregarHijoAST(index1.astNodo());
+        nodo.agregarHijo("]");
+        if (esBidimensional) {
+            nodo.agregarHijo("[");
+            nodo.agregarHijoAST(index2.astNodo());
+            nodo.agregarHijo("]");
+        }
+        return nodo;
     }
     
     @Override

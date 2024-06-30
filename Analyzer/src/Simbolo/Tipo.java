@@ -15,5 +15,10 @@ public class Tipo {
 
     public void setTipo(tipoDato tipo) {
         this.tipo = tipo;
-    }    
+    }   
+    
+    @Override
+    public String toString() {
+        return tipo.toString();
+    }
 }

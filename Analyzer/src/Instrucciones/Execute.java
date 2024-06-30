@@ -1,6 +1,7 @@
 package Instrucciones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Excepciones.Errores;
 import java.util.LinkedList;
 import Simbolo.*;
@@ -14,6 +15,18 @@ public class Execute extends Instruccion{
         super(new Tipo(tipoDato.VOID), linea, columna);
         this.id = id;
         this.parametros = parametros;
+    }
+    
+    @Override
+    public NodoAst astNodo() {
+        NodoAst nodoStartWith = new NodoAst("START_WITH: " + id);
+        
+        NodoAst nodoParametros = new NodoAst("Parametros");
+        for (Instruccion parametro : parametros) {
+            nodoParametros.agregarHijoAST(parametro.astNodo());
+        }
+        nodoStartWith.agregarHijoAST(nodoParametros);
+        return nodoStartWith;
     }
     
     @Override
@@ -54,26 +67,3 @@ public class Execute extends Instruccion{
         return null ;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,6 +1,7 @@
 package Expresiones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Excepciones.Errores;
 import Simbolo.*;
 
@@ -11,6 +12,13 @@ public class AccesoVar extends Instruccion {
     public AccesoVar(String id, int linea, int columna){
         super(new Tipo(tipoDato.VOID), linea, columna);
         this.id = id;
+    }
+    
+    @Override
+    public NodoAst astNodo() {
+        NodoAst nodoAcceso = new NodoAst("Acceso a Variable");
+        nodoAcceso.agregarHijo("Variable: " + id);
+        return nodoAcceso;
     }
     
     @Override

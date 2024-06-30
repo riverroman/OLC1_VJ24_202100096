@@ -2,6 +2,7 @@
 package Instrucciones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Simbolo.*;
 import Excepciones.Errores;
 import java.util.List;
@@ -16,6 +17,19 @@ public class Append extends Instruccion {
         super(null, linea, columna);
         this.identificador = identificador;
         this.valor = valor;
+    }
+    
+    @Override
+    public NodoAst astNodo() {
+        NodoAst nodoAppend = new NodoAst("Append");
+        nodoAppend.agregarHijo("ID: " + identificador);
+        nodoAppend.agregarHijo(".");
+        nodoAppend.agregarHijo("append");
+        nodoAppend.agregarHijo("(");
+        nodoAppend.agregarHijoAST(valor.astNodo());
+        nodoAppend.agregarHijo(")");
+        nodoAppend.agregarHijo(";");
+        return nodoAppend;
     }
            
     @Override

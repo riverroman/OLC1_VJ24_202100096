@@ -1,6 +1,7 @@
 package Instrucciones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Simbolo.*;
 import Excepciones.Errores;
 import java.util.List;
@@ -27,6 +28,22 @@ public class AsignacionCombinada extends Instruccion {
         this.index2 = index2;
         this.valor = valor;
         this.esBidimensional = true;
+    }
+    
+    @Override
+    public NodoAst astNodo() {
+        NodoAst nodoAsignacion = new NodoAst("Asignación Combinada");
+        nodoAsignacion.agregarHijo("ID: " + id);
+        nodoAsignacion.agregarHijo("[");
+        nodoAsignacion.agregarHijoAST(index1.astNodo());
+        if (esBidimensional) {
+            nodoAsignacion.agregarHijo("][");
+            nodoAsignacion.agregarHijoAST(index2.astNodo());
+        }
+        nodoAsignacion.agregarHijo("] = ");
+        nodoAsignacion.agregarHijoAST(valor.astNodo());
+        nodoAsignacion.agregarHijo(";");
+        return nodoAsignacion;
     }
 
     @Override

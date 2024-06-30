@@ -1,6 +1,7 @@
 package Instrucciones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Excepciones.Errores;
 import Expresiones.Nativo;
 import java.util.LinkedList;
@@ -16,6 +17,22 @@ public class Llamada extends Instruccion {
         super(null, linea, columna);
         this.id = id;
         this.parametros = parametros;
+    }
+    
+    @Override
+    public NodoAst astNodo() {
+        NodoAst nodoLlamada = new NodoAst("Llamada a: " + id);
+        nodoLlamada.agregarHijo("(");
+
+        NodoAst nodoParametros = new NodoAst("Parametros");
+        for (Instruccion parametro : parametros) {
+            nodoParametros.agregarHijoAST(parametro.astNodo());
+        }
+
+        nodoLlamada.agregarHijoAST(nodoParametros);
+        nodoLlamada.agregarHijo(")");
+
+        return nodoLlamada;
     }
     
     @Override

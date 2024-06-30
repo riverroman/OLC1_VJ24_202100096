@@ -1,6 +1,7 @@
 package Instrucciones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Simbolo.*;
 import Excepciones.Errores;
 import java.util.List;
@@ -19,6 +20,33 @@ public class DeclaracionVectores extends Instruccion {
         this.mutabilidad = mutabilidad;
     }
     
+    @Override
+    public NodoAst astNodo() {
+        NodoAst nodoDeclaracion = new NodoAst("Declaración de Vector");
+
+        nodoDeclaracion.agregarHijo("var");
+        nodoDeclaracion.agregarHijo(id);
+        nodoDeclaracion.agregarHijo(":");
+        nodoDeclaracion.agregarHijo(tipo.toString());
+        nodoDeclaracion.agregarHijo("[]");
+        nodoDeclaracion.agregarHijo("=");
+        nodoDeclaracion.agregarHijo("[");
+
+        NodoAst nodoValores = new NodoAst("Valores");
+        for (int i = 0; i < valores.size(); i++) {
+            nodoValores.agregarHijoAST(valores.get(i).astNodo());
+            if (i < valores.size() - 1) {
+                nodoValores.agregarHijo(",");
+            }
+        }
+
+        nodoDeclaracion.agregarHijoAST(nodoValores);
+        nodoDeclaracion.agregarHijo("]");
+        nodoDeclaracion.agregarHijo(";");
+
+        return nodoDeclaracion;
+    }
+
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla) {
         Object[] valoresInterpretados = new Object[valores.size()];

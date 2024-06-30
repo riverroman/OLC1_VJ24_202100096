@@ -1,6 +1,7 @@
 package Instrucciones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Excepciones.Errores;
 import Simbolo.Arbol;
 import Simbolo.Simbolo;
@@ -15,6 +16,13 @@ public class Decremento extends Instruccion {
     public Decremento(String identificador, int linea, int columna) {
         super(new Tipo(tipoDato.ENTERO), linea, columna);
         this.identificador = identificador;
+    }
+    
+    @Override
+    public NodoAst astNodo() {
+        NodoAst nodoDecremento = new NodoAst("Decremento");
+        nodoDecremento.agregarHijo(identificador + "--");
+        return nodoDecremento;
     }
 
     @Override

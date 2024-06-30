@@ -1,6 +1,7 @@
 package Instrucciones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Excepciones.Errores;
 import Simbolo.Arbol;
 import Simbolo.tablaSimbolos;
@@ -11,6 +12,23 @@ public class Print extends Instruccion {
     public Print(Instruccion expresion, int linea, int columna) {
         super(null, linea, columna);
         this.expresion = expresion;
+    }
+    
+    @Override
+    public NodoAst astNodo() {
+        NodoAst nodoPrint = new NodoAst("Print");
+        
+        nodoPrint.agregarHijo("println");
+        nodoPrint.agregarHijo("(");
+        if (expresion != null) {
+            nodoPrint.agregarHijoAST(expresion.astNodo());
+        } else {
+            nodoPrint.agregarHijo("null");
+        }
+        nodoPrint.agregarHijo(")");
+        nodoPrint.agregarHijo(";");
+        
+        return nodoPrint;
     }
 
     @Override

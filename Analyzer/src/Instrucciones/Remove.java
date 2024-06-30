@@ -1,6 +1,7 @@
 package Instrucciones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Simbolo.*;
 import Excepciones.Errores;
 import java.util.List;
@@ -15,6 +16,23 @@ public class Remove extends Instruccion{
         super(null, linea, columna);
         this.id = id;
         this.index = index;
+    }
+    
+    @Override
+    public NodoAst astNodo() {
+        NodoAst nodoRemove = new NodoAst("Remove");
+        nodoRemove.agregarHijo("ID: " + id);
+        nodoRemove.agregarHijo(".");
+        nodoRemove.agregarHijo("remove");
+        nodoRemove.agregarHijo("(");
+        if (index != null) {
+            nodoRemove.agregarHijoAST(index.astNodo());
+        } else {
+            nodoRemove.agregarHijo("null");
+        }
+        nodoRemove.agregarHijo(")");
+        nodoRemove.agregarHijo(";");
+        return nodoRemove;
     }
     
     @Override
@@ -46,26 +64,3 @@ public class Remove extends Instruccion{
         return  lista.remove(indice);   
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

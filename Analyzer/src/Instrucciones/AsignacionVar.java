@@ -1,6 +1,7 @@
 package Instrucciones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Excepciones.Errores;
 import Simbolo.*;
 
@@ -13,6 +14,17 @@ public class AsignacionVar extends Instruccion {
         super(new Tipo(tipoDato.VOID), linea, columna); // Inicializa this.tipo
         this.id = id;
         this.expresion = expresion;
+    }
+    
+    
+    @Override
+    public NodoAst astNodo() {
+        NodoAst nodoAsignacion = new NodoAst("Asignación");
+        nodoAsignacion.agregarHijo("ID: " + id);
+        nodoAsignacion.agregarHijo("=");
+        nodoAsignacion.agregarHijoAST(expresion.astNodo());
+        nodoAsignacion.agregarHijo(";");
+        return nodoAsignacion;
     }
     
     @Override

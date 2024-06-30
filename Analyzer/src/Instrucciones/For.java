@@ -1,6 +1,7 @@
 package Instrucciones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Excepciones.Errores;
 import java.util.LinkedList;
 import Simbolo.*;
@@ -18,6 +19,31 @@ public class For extends Instruccion {
         this.condicion = condicion;
         this.actualizacion = actualizacion;
         this.instrucciones = instrucciones;
+    }
+    
+    @Override
+    public NodoAst astNodo() {
+        
+        NodoAst nodoFor = new NodoAst("For");
+        
+        nodoFor.agregarHijo("for");
+        nodoFor.agregarHijo("(");
+        nodoFor.agregarHijoAST(this.asignacion.astNodo());
+        nodoFor.agregarHijo(";");
+        nodoFor.agregarHijoAST(this.condicion.astNodo());
+        nodoFor.agregarHijo(";");
+        nodoFor.agregarHijoAST(this.actualizacion.astNodo());
+        nodoFor.agregarHijo(")");
+
+        nodoFor.agregarHijo("{");
+        NodoAst nodoInstrucciones = new NodoAst("Instrucciones-For");
+        for (Instruccion instruccion : this.instrucciones) {
+            nodoInstrucciones.agregarHijoAST(instruccion.astNodo());
+        }
+        nodoFor.agregarHijoAST(nodoInstrucciones);
+        nodoFor.agregarHijo("}");
+
+        return nodoFor;
     }
     
     @Override
@@ -99,5 +125,5 @@ public class For extends Instruccion {
             }
         }
         return null;
-    }
+    }    
 }

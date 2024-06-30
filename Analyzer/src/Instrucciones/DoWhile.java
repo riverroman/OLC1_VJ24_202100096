@@ -2,6 +2,7 @@
 package Instrucciones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Excepciones.Errores;
 import Simbolo.*;
 import java.util.LinkedList;
@@ -16,6 +17,35 @@ public class DoWhile extends Instruccion {
         this.condicion = condicion;
     }
     
+    @Override
+    public NodoAst astNodo() {
+        NodoAst nodoDoWhile = new NodoAst("DoWhile");
+
+        nodoDoWhile.agregarHijo("do");
+        nodoDoWhile.agregarHijo("{");
+
+        NodoAst nodoInstrucciones = new NodoAst("Instrucciones-DoWhile");
+        for (Instruccion instruccion : this.instrucciones) {
+            nodoInstrucciones.agregarHijoAST(instruccion.astNodo());
+        }
+        nodoDoWhile.agregarHijoAST(nodoInstrucciones);
+
+        nodoDoWhile.agregarHijo("}");
+
+        nodoDoWhile.agregarHijo("while");
+        nodoDoWhile.agregarHijo("(");
+
+        NodoAst nodoCondicion = new NodoAst("Condicion-DoWhile");
+        nodoCondicion.agregarHijoAST(this.condicion.astNodo());
+        nodoDoWhile.agregarHijoAST(nodoCondicion);
+
+        nodoDoWhile.agregarHijo(")");
+        nodoDoWhile.agregarHijo(";");
+
+        return nodoDoWhile;
+    }
+
+
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla){
         var condicional = this.condicion.interpretar(arbol, tabla);

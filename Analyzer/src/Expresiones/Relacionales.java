@@ -1,6 +1,7 @@
 package Expresiones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Excepciones.Errores;
 import Simbolo.*;
 
@@ -16,6 +17,15 @@ public class Relacionales extends Instruccion {
         this.condicional1 = condicional1;
         this.condicional2 = condicional2;
         this.relacional = relacional;    
+    }
+    
+    @Override
+    public NodoAst astNodo() {
+        NodoAst nodoRelacional = new NodoAst("Operación Relacional: " + relacional);
+        nodoRelacional.agregarHijoAST(condicional1.astNodo());
+        nodoRelacional.agregarHijo(relacional.toString());
+        nodoRelacional.agregarHijoAST(condicional2.astNodo());
+        return nodoRelacional;
     }
     
     @Override

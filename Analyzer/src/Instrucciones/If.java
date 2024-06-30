@@ -3,6 +3,7 @@ package Instrucciones;
 import Abstracto.Instruccion;
 import Excepciones.Errores;
 import Expresiones.Nativo;
+import Ast.NodoAst;
 import java.util.LinkedList;
 import Simbolo.*;
 
@@ -16,6 +17,32 @@ public class If extends Instruccion {
         this.condicion = condicion;
         this.instruccionesIf = instruccionesIf;
         this.instruccionElse = instruccionElse;
+    }
+
+    @Override
+    public NodoAst astNodo() {
+        
+        NodoAst nodo = new NodoAst("IF");
+        nodo.agregarHijo("if");
+        nodo.agregarHijo("(");
+        nodo.agregarHijoAST(this.condicion.astNodo());
+        nodo.agregarHijo(")");
+        nodo.agregarHijo("{");
+
+        NodoAst nodoInstrIf = new NodoAst("INSTRUCCIONES-IF");
+        for (Instruccion instruccion : this.instruccionesIf) {
+            nodoInstrIf.agregarHijoAST(instruccion.astNodo());
+        }
+        nodo.agregarHijoAST(nodoInstrIf);
+        nodo.agregarHijo("}");
+
+        if (this.instruccionElse != null) {
+            NodoAst nodoInstrElse = new NodoAst("INSTRUCCIONES-ELSE");
+            nodoInstrElse.agregarHijoAST(this.instruccionElse.astNodo());
+            nodo.agregarHijoAST(nodoInstrElse);
+        }
+
+        return nodo;
     }
     
     @Override
@@ -65,5 +92,5 @@ public class If extends Instruccion {
             
             return null;
         }
-
+    
 }

@@ -1,6 +1,7 @@
 package Instrucciones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Excepciones.Errores;
 import Simbolo.*;
 import java.util.LinkedList;
@@ -14,6 +15,26 @@ public class While extends Instruccion {
         super(new Tipo(tipoDato.VOID), linea, columna);
         this.condicion = condicion;
         this.instrucciones = instrucciones;
+    }
+    
+    @Override
+    public NodoAst astNodo() {
+        NodoAst nodoWhile = new NodoAst("While");
+
+        nodoWhile.agregarHijo("while");
+        nodoWhile.agregarHijo("(");
+        nodoWhile.agregarHijoAST(this.condicion.astNodo());
+        nodoWhile.agregarHijo(")");
+
+        NodoAst nodoInstrucciones = new NodoAst("Instrucciones-While");
+        for (Instruccion instruccion : this.instrucciones) {
+            nodoInstrucciones.agregarHijoAST(instruccion.astNodo());
+        }
+        nodoWhile.agregarHijo("{");
+        nodoWhile.agregarHijoAST(nodoInstrucciones);
+        nodoWhile.agregarHijo("}");
+        
+        return nodoWhile;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package Instrucciones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Excepciones.Errores;
 import Simbolo.Arbol;
 import Simbolo.Simbolo;
@@ -31,6 +32,25 @@ public class Declaracion extends Instruccion {
         super(tipo, linea, columna);
         this.identificador = identificador;
         this.valor = null;
+    }
+    
+    @Override
+    public NodoAst astNodo() {
+        NodoAst nodoDeclaracion = new NodoAst("Declaracion");
+
+        nodoDeclaracion.agregarHijo(mutabilidad ? "const" : "var");
+        nodoDeclaracion.agregarHijo(identificador);
+        nodoDeclaracion.agregarHijo(":");
+        nodoDeclaracion.agregarHijo(tipo.toString());
+        
+        if (valor != null) {
+            nodoDeclaracion.agregarHijo("=");
+            nodoDeclaracion.agregarHijoAST(valor.astNodo());
+        }
+        
+        nodoDeclaracion.agregarHijo(";");
+        
+        return nodoDeclaracion;
     }
 
     @Override

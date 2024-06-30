@@ -1,6 +1,7 @@
 package Expresiones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Excepciones.Errores;
 import Simbolo.*;
 
@@ -23,6 +24,22 @@ public class Aritmeticas extends Instruccion {
         this.operando2 = operando2;
         this.operacion = operacion;
     }
+    
+    @Override
+    public NodoAst astNodo() {
+        String nombreOperacion = operacion.toString();
+        NodoAst nodoAritmetico = new NodoAst("Operación Aritmética: " + nombreOperacion);
+
+        if (operandoUnico != null) {
+            nodoAritmetico.agregarHijoAST(operandoUnico.astNodo());
+        } else {
+            nodoAritmetico.agregarHijoAST(operando1.astNodo());
+            nodoAritmetico.agregarHijoAST(operando2.astNodo());
+        }
+
+        return nodoAritmetico;
+    }
+
     
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla){

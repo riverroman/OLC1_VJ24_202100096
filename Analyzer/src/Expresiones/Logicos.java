@@ -1,6 +1,7 @@
 package Expresiones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Excepciones.Errores; 
 import Simbolo.*;
 
@@ -23,6 +24,17 @@ public class Logicos extends Instruccion {
         this.condicional2 = null;
         this.logico = logico;
     }
+    
+    @Override
+    public NodoAst astNodo() {
+        NodoAst nodoLogico = new NodoAst("Logico");
+        nodoLogico.agregarHijoAST(condicional1.astNodo());
+        if (condicional2 != null) {
+            nodoLogico.agregarHijoAST(condicional2.astNodo());
+        }
+        return nodoLogico;
+    }
+
     
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla){

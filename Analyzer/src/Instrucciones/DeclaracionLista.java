@@ -1,6 +1,7 @@
 package Instrucciones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Excepciones.Errores;
 import Simbolo.*;
 
@@ -13,6 +14,22 @@ public class DeclaracionLista extends Instruccion {
         super(new Tipo(tipoDato.LISTA), linea, columna);
         this.identificador = identificador;
         this.tipo = tipo;
+    }
+    
+    @Override
+    public NodoAst astNodo() {
+        NodoAst nodoDeclaracion = new NodoAst("Declaración de Lista");
+        nodoDeclaracion.agregarHijo("List<");
+        nodoDeclaracion.agregarHijo(tipo.toString());
+        nodoDeclaracion.agregarHijo(">");
+        nodoDeclaracion.agregarHijo(identificador);
+        nodoDeclaracion.agregarHijo("=");
+        nodoDeclaracion.agregarHijo("new");
+        nodoDeclaracion.agregarHijo("List");
+        nodoDeclaracion.agregarHijo("(");
+        nodoDeclaracion.agregarHijo(")");
+        nodoDeclaracion.agregarHijo(";");
+        return nodoDeclaracion;
     }
     
     @Override

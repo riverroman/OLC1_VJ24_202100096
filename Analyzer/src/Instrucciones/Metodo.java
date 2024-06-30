@@ -1,6 +1,7 @@
 package Instrucciones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Excepciones.Errores;
 import java.util.LinkedList;
 import Simbolo.Arbol;
@@ -21,6 +22,33 @@ public class Metodo extends Instruccion{
         this.instrucciones = instrucciones;
     }
     
+    @Override
+    public NodoAst astNodo() {
+        NodoAst nodoMetodo = new NodoAst("Metodo");
+        nodoMetodo.agregarHijo("ID: " + id);
+        nodoMetodo.agregarHijo("(");
+
+        NodoAst nodoParametros = new NodoAst("Parametros");
+        for (HashMap parametro : parametros) {
+            parametro.forEach((key, value) -> {
+                nodoParametros.agregarHijo(key.toString() + " : " + value.toString());
+            });
+        }
+        nodoMetodo.agregarHijoAST(nodoParametros);
+        nodoMetodo.agregarHijo(")");
+        nodoMetodo.agregarHijo("{");
+
+        NodoAst nodoInstrucciones = new NodoAst("Instrucciones");
+        for (Instruccion instruccion : instrucciones) {
+            nodoInstrucciones.agregarHijoAST(instruccion.astNodo());
+        }
+        nodoMetodo.agregarHijoAST(nodoInstrucciones);
+        nodoMetodo.agregarHijo("}");
+
+        return nodoMetodo;
+    }
+
+
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla){
         for(var i : this.instrucciones){

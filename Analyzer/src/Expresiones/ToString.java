@@ -1,6 +1,7 @@
 package Expresiones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Excepciones.Errores;
 import Simbolo.*;
 
@@ -11,6 +12,16 @@ public class ToString extends Instruccion {
     public ToString(Instruccion valor, int linea, int columna) {
         super(new Tipo(tipoDato.CADENA), linea, columna);
         this.valor = valor;
+    }
+    
+    @Override
+    public NodoAst astNodo() {
+        NodoAst nodoToString = new NodoAst("ToString");
+        nodoToString.agregarHijo("ToString");
+        nodoToString.agregarHijo("(");
+        nodoToString.agregarHijoAST(valor.astNodo());
+        nodoToString.agregarHijo(")");
+        return nodoToString;
     }
     
     @Override

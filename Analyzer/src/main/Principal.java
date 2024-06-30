@@ -3,6 +3,8 @@ package main;
 import Abstracto.Instruccion;
 import Analyzers.Lexer;
 import Analyzers.Parser;
+import Ast.Grafica;
+import Ast.NodoAst;
 import Excepciones.Errores;
 import Expresiones.AccesoCombinado;
 import Instrucciones.AsignacionCombinada;
@@ -30,6 +32,7 @@ import java.util.LinkedList;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Principal extends javax.swing.JFrame {
@@ -58,8 +61,9 @@ public class Principal extends javax.swing.JFrame {
         BTNSALIR = new javax.swing.JButton();
         BTNINTERPRETAR = new javax.swing.JButton();
         BTNREPORTESIMBOLOS = new javax.swing.JButton();
-        BTNCARGARARCHIVO1 = new javax.swing.JButton();
+        BTNREPORTEAST = new javax.swing.JButton();
         BTNRESET = new javax.swing.JButton();
+        BTNCARGARARCHIVO = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -117,13 +121,13 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        BTNCARGARARCHIVO1.setBackground(new java.awt.Color(98, 166, 142));
-        BTNCARGARARCHIVO1.setFont(new java.awt.Font("JetBrains Mono Light", 0, 18)); // NOI18N
-        BTNCARGARARCHIVO1.setForeground(new java.awt.Color(0, 0, 0));
-        BTNCARGARARCHIVO1.setText("CARGAR ARCHIVO");
-        BTNCARGARARCHIVO1.addActionListener(new java.awt.event.ActionListener() {
+        BTNREPORTEAST.setBackground(new java.awt.Color(98, 166, 142));
+        BTNREPORTEAST.setFont(new java.awt.Font("JetBrains Mono Light", 0, 18)); // NOI18N
+        BTNREPORTEAST.setForeground(new java.awt.Color(0, 0, 0));
+        BTNREPORTEAST.setText("REPORTE AST");
+        BTNREPORTEAST.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BTNCARGARARCHIVO1ActionPerformed(evt);
+                BTNREPORTEASTActionPerformed(evt);
             }
         });
 
@@ -137,6 +141,16 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        BTNCARGARARCHIVO.setBackground(new java.awt.Color(98, 166, 142));
+        BTNCARGARARCHIVO.setFont(new java.awt.Font("JetBrains Mono Light", 0, 18)); // NOI18N
+        BTNCARGARARCHIVO.setForeground(new java.awt.Color(0, 0, 0));
+        BTNCARGARARCHIVO.setText("CARGAR ARCHIVO");
+        BTNCARGARARCHIVO.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTNCARGARARCHIVOActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -147,14 +161,16 @@ public class Principal extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(47, 47, 47)
                         .addComponent(LBLLOGO, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(44, 44, 44)
-                        .addComponent(BTNCARGARARCHIVO1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(50, 50, 50)
+                        .addComponent(BTNCARGARARCHIVO, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(BTNINTERPRETAR, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                         .addComponent(BTNREPORTESIMBOLOS, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(BTNREPORTEERRORES, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(BTNREPORTEERRORES, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
+                            .addComponent(BTNREPORTEAST, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(68, 68, 68))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -173,12 +189,14 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(104, 104, 104)
+                        .addGap(22, 22, 22)
+                        .addComponent(BTNREPORTEAST, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(BTNREPORTESIMBOLOS, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(BTNREPORTEERRORES, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(BTNCARGARARCHIVO1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(BTNINTERPRETAR, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(BTNINTERPRETAR, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BTNCARGARARCHIVO, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(32, 32, 32)
                         .addComponent(LBLLOGO, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -201,29 +219,29 @@ public class Principal extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_BTNSALIRActionPerformed
 
-    private void BTNCARGARARCHIVO1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNCARGARARCHIVO1ActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivos de Texto", "jc","txt"));
+    private void BTNREPORTEASTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNREPORTEASTActionPerformed
+        try {
+            String texto = TXTENTRADA.getText();
+            Lexer lexer = new Lexer(new BufferedReader(new StringReader(texto)));
+            Parser parser = new Parser(lexer);
+            var resultado = parser.parse();
+            var ast = new Arbol((LinkedList<Instruccion>) resultado.value);
 
-        int result = fileChooser.showOpenDialog(this);
-        
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            try {
-                BufferedReader br = new BufferedReader(new FileReader(selectedFile));
-                StringBuilder sb = new StringBuilder();
-                String line;
-                while ((line = br.readLine()) != null) {
-                    sb.append(line).append("\n");
-                }
-                br.close();
+            NodoAst nodoRaiz = new NodoAst("INICIO");
+            NodoAst nodoInstrucciones = new NodoAst("INSTRUCCIONES");
 
-                TXTENTRADA.setText(sb.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
+            for (var instruccion : ast.getInstrucciones()) {
+                nodoInstrucciones.agregarHijoAST(instruccion.astNodo());
             }
+            nodoRaiz.agregarHijoAST(nodoInstrucciones);
+
+            Grafica.graficarArbol(nodoRaiz);
+            JOptionPane.showMessageDialog(this, "AST generado exitosamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al generar el AST: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
-    }//GEN-LAST:event_BTNCARGARARCHIVO1ActionPerformed
+    }//GEN-LAST:event_BTNREPORTEASTActionPerformed
 
     private void BTNINTERPRETARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNINTERPRETARActionPerformed
          try {
@@ -232,7 +250,6 @@ public class Principal extends javax.swing.JFrame {
             Parser parser = new Parser(lexer);
             var resultado = parser.parse();
             var ast = new Arbol((LinkedList<Instruccion>) resultado.value);
-            
             var tabla = new tablaSimbolos();
             tabla.setNombre("GLOBLA");
             ast.setConsola("");
@@ -296,7 +313,6 @@ public class Principal extends javax.swing.JFrame {
             
             TXTSALIDA.setText(ast.getConsola());
             listaErroresGlobal = lista;
-             System.out.println(listaErroresGlobal);
             
         } catch (Exception e) {
             System.out.println("Error fatal en compilacion de entrada.");
@@ -331,6 +347,30 @@ public class Principal extends javax.swing.JFrame {
         listaErroresGlobal.clear();
         tablaGlobal = null;
     }//GEN-LAST:event_BTNRESETActionPerformed
+
+    private void BTNCARGARARCHIVOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNCARGARARCHIVOActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivos de Texto", "jc","txt"));
+
+        int result = fileChooser.showOpenDialog(this);
+        
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(selectedFile));
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line).append("\n");
+                }
+                br.close();
+
+                TXTENTRADA.setText(sb.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_BTNCARGARARCHIVOActionPerformed
 
     public static void main(String args[]) {
 
@@ -477,8 +517,9 @@ public class Principal extends javax.swing.JFrame {
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BTNCARGARARCHIVO1;
+    private javax.swing.JButton BTNCARGARARCHIVO;
     private javax.swing.JButton BTNINTERPRETAR;
+    private javax.swing.JButton BTNREPORTEAST;
     private javax.swing.JButton BTNREPORTEERRORES;
     private javax.swing.JButton BTNREPORTESIMBOLOS;
     private javax.swing.JButton BTNRESET;

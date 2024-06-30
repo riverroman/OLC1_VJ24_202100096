@@ -1,6 +1,7 @@
 package Instrucciones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Excepciones.Errores;
 import Simbolo.Arbol;
 import Simbolo.Simbolo;
@@ -16,7 +17,15 @@ public class Incremento extends Instruccion {
         super(new Tipo(tipoDato.ENTERO), linea, columna);
         this.identificador = identificador;
     }
-
+    
+    @Override
+    public NodoAst astNodo() {
+        NodoAst nodoIncremento = new NodoAst("Incremento");
+        nodoIncremento.agregarHijo(identificador);
+        nodoIncremento.agregarHijo("++");
+        return nodoIncremento;
+    }
+    
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla) {
         Simbolo simbolo = tabla.getVariable(this.identificador);

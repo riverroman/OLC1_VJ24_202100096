@@ -1,6 +1,7 @@
 package Expresiones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Excepciones.Errores;
 import Simbolo.Arbol;
 import Simbolo.Tipo;
@@ -16,6 +17,16 @@ public class Casteo extends Instruccion {
         super(tipoDestino, linea, columna);
         this.valor = valor;
         this.tipoDestino = tipoDestino;
+    }
+
+    @Override
+    public NodoAst astNodo() {
+        NodoAst nodoCasteo = new NodoAst("Casteo");
+        nodoCasteo.agregarHijo("(");
+        nodoCasteo.agregarHijo(tipoDestino.toString());
+        nodoCasteo.agregarHijo(")");
+        nodoCasteo.agregarHijoAST(valor.astNodo());
+        return nodoCasteo;
     }
 
     @Override

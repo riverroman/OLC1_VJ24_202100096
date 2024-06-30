@@ -1,6 +1,7 @@
 package Expresiones;
 
 import Abstracto.Instruccion;
+import Ast.NodoAst;
 import Excepciones.Errores;
 import Simbolo.*;
 
@@ -11,6 +12,16 @@ public class Round extends Instruccion {
     public Round(Instruccion valor, int linea, int columna){
         super(new Tipo(tipoDato.ENTERO), linea, columna);
         this.valor = valor;
+    }
+    
+    @Override
+    public NodoAst astNodo() {
+        NodoAst nodoRound = new NodoAst("Round");
+        nodoRound.agregarHijo("Round");
+        nodoRound.agregarHijo("(");
+        nodoRound.agregarHijoAST(valor.astNodo());
+        nodoRound.agregarHijo(")");
+        return nodoRound;
     }
     
     @Override
