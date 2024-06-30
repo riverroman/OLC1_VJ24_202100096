@@ -36,9 +36,8 @@ public class Return extends Instruccion {
             if (valor instanceof Errores) {
                 return valor;
             }
-            return new Nativo(valor, new Tipo(tipoDato.DECIMAL),this.linea, this.columna);
+            return new Nativo(valor, new Tipo(tipoDato.VOID),this.linea, this.columna);
         }
         return new Nativo("null", new Tipo(tipoDato.VOID), this.linea, this.columna);
-         
     }
 }

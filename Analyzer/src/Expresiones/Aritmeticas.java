@@ -290,6 +290,7 @@ public class Aritmeticas extends Instruccion {
     //Multiplicacion
     
     public Object Multiplicacion(Object op1, Object op2){
+        
         var tipo1 = this.operando1.tipo.getTipo();
         var tipo2 = this.operando2.tipo.getTipo();
         

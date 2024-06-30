@@ -301,15 +301,10 @@ public class Principal extends javax.swing.JFrame {
                 }
             }
             
-            if (e != null) {
-                var resultadoExecute = e.interpretar(ast, tabla);
-                if(resultadoExecute instanceof Errores){
-                    System.out.println("Error en ejecucion");
-                    System.out.println(resultadoExecute);
-                }
-            } else {
-                System.out.println("No se encontro la función 'main'");
-            }  
+            var resultadoExecute = e.interpretar(ast, tabla);
+            if(resultadoExecute instanceof Errores){
+                System.out.println("Existe un error");
+            }
             
             TXTSALIDA.setText(ast.getConsola());
             listaErroresGlobal = lista;

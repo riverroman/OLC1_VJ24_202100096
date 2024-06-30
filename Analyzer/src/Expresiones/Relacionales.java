@@ -61,6 +61,7 @@ public class Relacionales extends Instruccion {
     //IGUAL IGUAL : ==
     
     public Object equals(Object compador1, Object comparador2){
+        
         var comparando1 = this.condicional1.tipo.getTipo();
         var comparando2 = this.condicional2.tipo.getTipo();
             
