@@ -74,6 +74,7 @@ boleano = true|false
 "round"     { return new Symbol(sym.T_ROUND, yycolumn, yyline, yytext());    }
 "length"    { return new Symbol(sym.T_LENGTH, yycolumn, yyline, yytext());   }
 "toString"  { return new Symbol(sym.T_TOSTRING, yycolumn, yyline, yytext()); }
+"find"      { return new Symbol(sym.T_FIND, yycolumn, yyline, yytext()); }
 
 /*  Palabras Reservadas Sentencias List   */
 

@@ -30,8 +30,9 @@ public class sym {
   public static final int T_CONST = 35;
   public static final int T_CADENA = 4;
   public static final int T_PRINTLN = 2;
-  public static final int UMENOS = 62;
+  public static final int UMENOS = 63;
   public static final int T_DO = 47;
+  public static final int T_FIND = 62;
   public static final int T_DOT = 55;
   public static final int T_INCREMENT = 37;
   public static final int EOF = 0;
@@ -134,6 +135,7 @@ public class sym {
   "T_LENGTH",
   "T_RETURN",
   "T_TOSTRING",
+  "T_FIND",
   "UMENOS"
   };
 }
